@@ -5,3 +5,7 @@ components/routes/_*
 .sass-cache/*
 .idea
 package-lock.json
+yarn.lock
+logs
+.data
+=

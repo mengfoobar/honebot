@@ -1,4 +1,5 @@
-var debug = require('debug')('botkit:user_registration');
+const debug = require('debug')('botkit:user_registration');
+const Workspace = require('../app/nodes/workspace')
 
 module.exports = function(controller) {
 
@@ -22,7 +23,7 @@ module.exports = function(controller) {
                     url: payload.identity.url,
                     name: payload.identity.team,
                 };
-                var new_team= true;
+                new_team= true;
             }
 
             team.bot = {
@@ -48,20 +49,17 @@ module.exports = function(controller) {
 
                     testbot.team_info = team;
 
-                    // Replace this with your own database!
-                    //TODO: save bot information in workspace in mysql
-
-                    controller.storage.teams.save(team, function(err, id) {
-                        if (err) {
-                            debug('Error: could not save team record:', err);
+                    Workspace.insertWorkspace(cleanWorkspaceData(team))
+                      .then(([workspace, isNew])=>{
+                        if (isNew) {
+                          controller.trigger('create_team', [testbot, team]);
                         } else {
-                            if (new_team) {
-                                controller.trigger('create_team', [testbot, team]);
-                            } else {
-                                controller.trigger('update_team', [testbot, team]);
-                            }
+                          controller.trigger('update_team', [testbot, team]);
                         }
-                    });
+                      })
+                      .catch(err=>{
+                        debug('Error: could not save team record:', err);
+                      })
                 }
             });
         });
@@ -89,4 +87,15 @@ module.exports = function(controller) {
 
     });
 
+}
+
+const cleanWorkspaceData = raw => {
+    return {
+      id: raw.id,
+      createdBy: raw.createdBy,
+      url: raw.url,
+      team: raw.name,
+      botToken: raw.bot.token,
+      workspaceToken: raw.bot.app_token
+    }
 }

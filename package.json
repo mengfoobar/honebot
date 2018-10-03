@@ -1,7 +1,7 @@
 {
-  "name": "botkit-starter-slack",
-  "version": "0.0.2",
-  "description": "A starter kit for building a custom Slack bot with Botkit Studio",
+  "name": "puzlr",
+  "version": "0.0.1",
+  "description": "A social bot that improves team chemistry/engagement through fun puzzles",
   "main": "bot.js",
   "scripts": {
     "start": "node bot.js"
@@ -15,25 +15,34 @@
     "debug": "^2.3.3",
     "express": "^4.14.0",
     "express-hbs": "^1.0.4",
+    "mysql2": "^1.6.1",
     "node-env-file": "^0.1.8",
     "querystring": "^0.2.0",
     "request": "^2.79.0",
+    "sequelize": "^4.39.0",
+    "winston": "^3.1.0",
     "wordfilter": "^0.2.6"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "eslint": "^5.6.1",
+    "eslint-config-airbnb": "17.1.0",
+    "eslint-plugin-import": "^2.14.0",
+    "eslint-plugin-jsx-a11y": "^6.1.1",
+    "eslint-plugin-react": "^7.11.0"
+  },
   "repository": {
     "type": "git",
-    "url": "https://github.com/howdyai/botkit-starter-slack.git"
+    "url": "https://github.com/mengfoobar/puzlr"
   },
   "bugs": {
-    "url": "https://github.com/howdyai/botkit-starter-slack/issues"
+    "url": "https://github.com/mengfoobar/puzlr/issues"
   },
-  "homepage": "https://github.com/howdyai/botkit-starter-slack",
+  "homepage": "https://github.com/mengfoobar/puzlr",
   "keywords": [
     "bots",
     "chatbots",
     "slack"
   ],
-  "author": "ben@howdy.ai",
+  "author": "meng.foo.bar@gmail.com",
   "license": "ISC"
 }
