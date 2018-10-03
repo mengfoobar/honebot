@@ -48,7 +48,7 @@ module.exports = function(controller) {
                     testbot.identity.name = bot_auth.user;
 
                     testbot.team_info = team;
-
+                    //WORKSPACE_REGISTER_ENTRY
                     Workspace.insertWorkspace(cleanWorkspaceData(team))
                       .then(([workspace, isNew])=>{
                         if (isNew) {
