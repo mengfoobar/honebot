@@ -8,15 +8,22 @@ const Workspace = connection.define('workspace', {
     unique: true,
     primaryKey: true,
   },
+  botUserId: {
+    type: sequelize.STRING(256),
+    allowNull: false,
+  },
   createdBy: {
     // possible tie in to user as foreign key
     type: sequelize.STRING(256),
+    allowNull: false,
   },
   team: { // name for team
     type: sequelize.STRING(256),
+    allowNull: false,
   },
   url: {
     type: sequelize.STRING(256),
+    allowNull: false,
   },
   dateCreated: {
     type: sequelize.DATE,

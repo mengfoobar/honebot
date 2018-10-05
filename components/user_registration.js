@@ -1,5 +1,4 @@
 const debug = require('debug')('botkit:user_registration');
-const Workspace = require('../app/nodes/workspace')
 
 module.exports = function(controller) {
 
@@ -49,17 +48,19 @@ module.exports = function(controller) {
 
                     testbot.team_info = team;
                     //WORKSPACE_REGISTER_ENTRY
-                    Workspace.insertWorkspace(cleanWorkspaceData(team))
-                      .then(([workspace, isNew])=>{
-                        if (isNew) {
-                          controller.trigger('create_team', [testbot, team]);
+
+                    controller.storage.teams.save(team, function(err, id) {
+                        if (err) {
+                          debug('Error: could not save team record:', err);
                         } else {
-                          controller.trigger('update_team', [testbot, team]);
+                          if (new_team) {
+                            controller.trigger('create_team', [testbot, team]);
+                          } else {
+                            controller.trigger('update_team', [testbot, team]);
+                          }
                         }
-                      })
-                      .catch(err=>{
-                        debug('Error: could not save team record:', err);
-                      })
+                    });
+
                 }
             });
         });
@@ -89,13 +90,4 @@ module.exports = function(controller) {
 
 }
 
-const cleanWorkspaceData = raw => {
-    return {
-      id: raw.id,
-      createdBy: raw.createdBy,
-      url: raw.url,
-      team: raw.name,
-      botToken: raw.bot.token,
-      workspaceToken: raw.bot.app_token
-    }
-}
+
