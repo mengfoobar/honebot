@@ -1,4 +1,9 @@
+const workspaceEvents = require('./workspace');
+const channelEvents = require('./channel')
+const commandsEvents = require('./commands')
+
 module.exports = {
-  initWorkspaceEvents: require('./workspace'),
-  initChannelEvents: require('./channel'),
+  initWorkspaceEvents: workspaceEvents,
+  initChannelEvents: channelEvents,
+  initCommandEvents: commandsEvents,
 }

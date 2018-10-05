@@ -42,9 +42,10 @@ webserver.get('/', function(req, res){
 require(__dirname + '/components/user_registration.js')(controller);
 
 // Send a message when joining a channel
-const {initChannelEvents, initWorkspaceEvents} = require('./app/events');
+const {initChannelEvents, initWorkspaceEvents, initCommandEvents} = require('./app/events');
 initChannelEvents(controller);
-initWorkspaceEvents(controller)
+initWorkspaceEvents(controller);
+initCommandEvents(controller);
 
 
 var normalizedPath = require("path").join(__dirname, "skills");
