@@ -1,22 +1,38 @@
-const cleanBotkitDataToModel = botkitData => ({
-  ...botkitData,
-});
+const ChannelModel = require('../models/channel');
 
-const cleanModelDataToBotkit = modelData => ({
-  ...modelData,
+const cleanBotkitDataToModel = botkitData => ({
+  id: botkitData.channel,
+  invitedBy: botkitData.inviter,
+  workspace: botkitData.team,
 });
 
 module.exports = {
-  get: async (id, cb) => {
-    console.log('hit channel get');
+  get: async (id, callback) => {
+    const channel = await ChannelModel.findById(id);
+    callback(null, channel.toJSON());
   },
-  save: async (rawData, cb) => {
-    console.log('hit channel save');
+  save: async (rawData, callback) => {
+    // TODO: handle updating here as well
+    const cleanedData = cleanBotkitDataToModel(rawData);
+
+    await ChannelModel.findOrCreate({
+      where: { id: cleanedData.id },
+      defaults: cleanedData,
+    });
+
+    callback();
   },
-  delete(id, cb) {
-    console.log('hit channel delete');
+  delete: async (id, callback) => {
+    const channel = await ChannelModel.findById(id);
+    if (channel) {
+      await channel.destroy();
+      callback();
+    }
   },
-  all(cb) {
-    console.log('hit channel all');
+  all: async (callback) => {
+    const channels = await ChannelModel.findAll({});
+    const cleanedData = channels.map(channel => channel.toJSON());
+    callback(cleanedData);
   },
+
 };

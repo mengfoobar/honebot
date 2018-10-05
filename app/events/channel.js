@@ -5,7 +5,11 @@ module.exports = (controller) => {
     // bot.reply(message, "I'm here!");
   });
 
-  controller.on('bot_channel_join', (bot, message) => {
-    bot.reply(message, "What's happening peeps! Puzlr in da house");
+  controller.on('bot_channel_join', (bot, e) => {
+    controller.storage.channels.save(e, (err) => {
+      if (!err) {
+        bot.reply(e, "What's happening peeps! Puzlr in da house");
+      }
+    });
   });
 };
