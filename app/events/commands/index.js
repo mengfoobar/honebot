@@ -1,9 +1,9 @@
 const { get } = require('lodash');
 const { parseMentionText } = require('../../utils/messageParser');
-const quizCommandHandler = require('./quiz');
+const puzzleCommandHandler = require('./puzzle');
 
 const commandHandlers = {
-  quiz: quizCommandHandler,
+  puzzle: puzzleCommandHandler,
 };
 
 module.exports = (controller) => {

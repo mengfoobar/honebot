@@ -1,12 +1,12 @@
 module.exports = {
-  START_QUIZ: () => [{
+  START_PUZZLE: () => [{
     attachments: [
       {
         title: 'Hey there good looking. Click Start to take on the puzzle!',
-        callback_id: 'start_quiz',
+        callback_id: 'start_puzzle',
         actions: [
           {
-            name: 'start_quiz',
+            name: 'start_puzzle',
             text: 'Start',
             value: 'yes',
             type: 'button',
@@ -24,7 +24,7 @@ module.exports = {
   ]],
   CORRECT_ANSWER: () => 'Awesome! You got the right answer!',
   WRONG_ANSWER: () => 'Oh nos...answer is not right',
-  QUIZ_SUBMISSION_RESULT_CORRECT_ANSWER: () => 'You completed the puzzle in %s. Final score: %f.2',
-  QUIZ_SUBMISSION_RESULT_WRONG_ANSWER: () => 'Hope ya got some in ya for next time.',
+  SUBMISSION_RESULT_CORRECT_ANSWER: () => 'You completed the puzzle in %s. Final score: %f.2',
+  SUBMISSION_RESULT_WRONG_ANSWER: () => 'Hope ya got some in ya for next time.',
 
 };
