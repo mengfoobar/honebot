@@ -1,5 +1,5 @@
 const { TEXT, IMAGE, QUESTION } = require('../constants/messageTypes');
-const { MEDIUM, EASY, HARD } = require('../constants/quizDifficulty');
+const { MEDIUM, EASY, HARD } = require('../constants/puzzleDifficulty');
 
 module.exports = [
   {
@@ -32,12 +32,12 @@ module.exports = [
           },
           {
             label: '23',
-            value: 23,
+            value: '23',
           },
         ],
       },
     ],
-    answer: 23,
+    answer: '23',
     solution: 'Some solution',
   },
 ];
