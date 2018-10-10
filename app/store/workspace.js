@@ -20,7 +20,7 @@ const cleanModelDataToBotkit = modelData => ({
     app_token: modelData.workspaceToken,
     user_id: modelData.botUserId,
     createdBy: modelData.createdBy,
-    name: modelData.team
+    name: modelData.team,
   },
 });
 

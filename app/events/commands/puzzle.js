@@ -1,18 +1,25 @@
+/* eslint-disable eqeqeq */
 const Timer = require('easytimer.js');
 const _ = require('lodash');
 const { sprintf } = require('sprintf-js');
 
 const message = require('../../constants/messages/puzzle');
 const MessageTypes = require('../../constants/messageTypes');
-const { getUniquePuzzle } = require('../../store/puzzle');
+const { getFreshPuzzle } = require('../../store/puzzle');
 const Submission = require('../../store/submission');
 
 module.exports = {
   start: (bot, event, configs = null) => {
     bot.startPrivateConversation(event, async (err, convo) => {
       convo.addQuestion(...message.START_PUZZLE());
-      const uniquePuzzle = await getUniquePuzzle();
-      uniquePuzzle.messages.map((m) => {
+      const freshPuzzle = await getFreshPuzzle(_.get(convo, 'context.channel', null));
+      if (!freshPuzzle) {
+        convo.addMessage(message.OUT_OF_PUZZLES());
+        convo.next();
+        return;
+      }
+
+      freshPuzzle.messages.map((m) => {
         switch (m.type) {
           case MessageTypes.IMAGE:
             convo.addMessage(m.value);
@@ -27,7 +34,7 @@ module.exports = {
               convo.addQuestion({
                 attachments: [{
                   title: m.value,
-                  callback_id: uniquePuzzle.id,
+                  callback_id: freshPuzzle.id,
                   actions:
                     m.choices.map(btn => ({
                       name: btn.value,
@@ -42,19 +49,28 @@ module.exports = {
                 callback: async (reply, convo) => {
                   const timeDuration = timer.getTimeValues().toString();
                   timer.stop();
-                  const submittedValue = _.get(reply, 'actions.0.value');
+
+                  const submittedAnswer = _.get(reply, 'actions.0.value');
                   const score = _.random(0, 10.0);
-                  await Submission.save({
+                  const isAnswerCorrect = (submittedAnswer == freshPuzzle.correctAnswer);
+
+                  const [submission, created] = await Submission.save({
                     duration: timeDuration,
                     user: reply.user,
                     channel: reply.channel,
-                    reply: submittedValue,
-                    correctAnswer: uniquePuzzle.answer,
-                    puzzleId: uniquePuzzle.id,
+                    submittedAnswer,
+                    isAnswerCorrect,
+                    puzzle: freshPuzzle.id,
                     score,
                   });
 
-                  if (submittedValue == uniquePuzzle.answer) {
+                  if (!created) {
+                    convo.addMessage(message.ALREADY_SUBMITTED());
+                    convo.next();
+                    return;
+                  }
+
+                  if (isAnswerCorrect) {
                     convo.addMessage(message.CORRECT_ANSWER());
                     convo.addMessage(
                       sprintf(message.SUBMISSION_RESULT_CORRECT_ANSWER(),
@@ -70,7 +86,7 @@ module.exports = {
                   convo.next();
 
                   // TODO show leaderboard
-                  // TODO: compare with average
+                  // TODO: compare with average scores
                 },
               })));
             } else {
