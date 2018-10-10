@@ -3,6 +3,7 @@ const Sequelize = require('sequelize');
 const connection = require('../db');
 const Puzzle = require('./puzzle');
 const Channel = require('./channel');
+const User = require('./user')
 
 const Submission = connection.define('submission', {
   id: {
@@ -41,7 +42,10 @@ const Submission = connection.define('submission', {
   },
   user: {
     type: Sequelize.DataTypes.STRING(256),
-    allowNull: false,
+    references: {
+      model: User,
+      key: 'id',
+    },
   },
   submittedAnswer: {
     type: Sequelize.DataTypes.STRING(256),

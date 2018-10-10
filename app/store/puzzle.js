@@ -1,4 +1,3 @@
-// const Puzzle = require('../models/puzzle')
 const { sprintf } = require('sprintf-js');
 const _ = require('lodash');
 const db = require('../db');

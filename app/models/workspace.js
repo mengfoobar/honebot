@@ -43,7 +43,6 @@ const Workspace = connection.define('workspace', {
 
 Workspace.sync().then(() => {
   logger.info('Succesfully synced workspace to mysql');
-  // TODO: check if the auth works on clean start with no auth
   return Workspace.findOrCreate({
     where: { id: process.env.local_env_workspace_id },
     defaults: {
