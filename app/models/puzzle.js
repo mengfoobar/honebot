@@ -4,7 +4,7 @@ const connection = require('../db');
 const logger = require('../utils/logger');
 const puzzleDifficulties = require('../constants/puzzleDifficulty');
 const puzzleTypes = require('../constants/puzzleType');
-const { TEXT, IMAGE, QUESTION } = require('../constants/messageTypes');
+const { TEXT, IMAGE, MC_QUESTION } = require('../constants/messageTypes');
 
 const Puzzle = connection.define('puzzle', {
   id: {
@@ -51,15 +51,11 @@ Puzzle.sync().then(() => {
       solution: 'Some solution',
       messages: [
         {
-          type: TEXT,
-          value: 'Hey there good looking. Click start to take on the quiz',
-        },
-        {
           type: IMAGE,
           value: 'https://static.boredpanda.com/blog/wp-content/uploads/2015/09/father-son-comics-lunarbaboon-76__700.jpg',
         },
         {
-          type: QUESTION,
+          type: MC_QUESTION,
           value: 'When papa bear was 31, baby bear was 8. Now baby bear big and strong, and papa bear is twice as old as baby bear. How old is baby bear?',
           choices: [
             {

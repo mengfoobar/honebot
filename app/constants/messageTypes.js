@@ -1,5 +1,6 @@
 module.exports = {
   IMAGE: 'IMAGE',
   TEXT: 'TEXT',
-  QUESTION: 'QUESTION'
+  QUESTION: 'QUESTION',
+  MC_QUESTION: 'MC_QUESTION',
 };
