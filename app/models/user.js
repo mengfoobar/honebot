@@ -11,10 +11,7 @@ const User = connection.define('user', {
   },
   workspace: {
     type: Sequelize.DataTypes.STRING(256),
-    references: {
-      model: Workspace,
-      key: 'id',
-    },
+    allowNull: false,
   },
   // TODO: eventually support user based permissions/configs
   // TODO: fill out rest after discussion with Dexter

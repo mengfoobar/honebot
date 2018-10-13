@@ -31,6 +31,25 @@ module.exports = {
   ONE_MINUTE_LEFT: () => "Only 1 minute left! Let's crunch those numbers",
   THIRTY_SECONDS_LEFT: () => '30 seconds left!',
   TIMES_UP: () => 'Times Up. Nothing submitted :( Better luck next time!',
-
-
+  SET_SETTINGS: cb => [{
+    attachments: [
+      {
+        title: 'Time to edit your settings',
+        callback_id: 'edit_settings',
+        actions: [
+          {
+            name: 'edit_settings',
+            text: 'Edit Settings',
+            value: 'edit',
+            type: 'button',
+          },
+        ],
+      },
+    ],
+  }, [
+    {
+      pattern: 'edit',
+      callback: cb,
+    },
+  ]],
 };

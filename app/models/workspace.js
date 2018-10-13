@@ -43,18 +43,6 @@ const Workspace = connection.define('workspace', {
 
 Workspace.sync().then(() => {
   logger.info('Succesfully synced workspace to mysql');
-  return Workspace.findOrCreate({
-    where: { id: process.env.local_env_workspace_id },
-    defaults: {
-      id: process.env.local_env_workspace_id,
-      botUserId: process.env.local_env_bot_user_id,
-      createdBy: process.env.local_env_main_user_id,
-      team: process.env.local_env_workspace_name,
-      url: process.env.local_env_workspace_url,
-      botToken: process.env.local_env_workspace_bot_token,
-      workspaceToken: process.env.local_env_workspace_token,
-    },
-  });
 });
 
 module.exports = Workspace;
