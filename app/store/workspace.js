@@ -27,7 +27,8 @@ const cleanModelDataToBotkit = modelData => ({
 module.exports = {
   get: async (id, callback) => {
     const workspace = await WorkspaceModel.findById(id);
-    callback(null, workspace ? cleanModelDataToBotkit(workspace.toJSON()) : null);
+    callback && callback(null, workspace ? cleanModelDataToBotkit(workspace.toJSON()) : null);
+    return workspace;
   },
   save: async (rawData, callback) => {
     // TODO: handle updating here as well
@@ -39,6 +40,10 @@ module.exports = {
     });
 
     callback();
+  },
+  update: async (id, params) => {
+    const workspace = await WorkspaceModel.findById(id);
+    return workspace.update(params);
   },
   delete: async (id, callback) => {
     const workspace = await WorkspaceModel.findById(id);

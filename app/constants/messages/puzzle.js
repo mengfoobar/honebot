@@ -1,12 +1,14 @@
+const { generateDynamicId } = require('../../utils/idGenerator');
+
 module.exports = {
   START_PUZZLE: cb => [{
     attachments: [
       {
         title: 'Why hello there! Click Start to begin the puzzle.\n Remember you have up to 5 minutes to complete it!',
-        callback_id: 'start_puzzle',
+        callback_id: generateDynamicId('start_puzzle'),
         actions: [
           {
-            name: 'start_puzzle',
+            name: generateDynamicId('start_puzzle'),
             text: 'Start',
             value: 'yes',
             type: 'button',
@@ -35,10 +37,10 @@ module.exports = {
     attachments: [
       {
         title: 'Time to edit your settings',
-        callback_id: 'edit_settings',
+        callback_id: generateDynamicId('edit_settings'),
         actions: [
           {
-            name: 'edit_settings',
+            name: 'edit',
             text: 'Edit Settings',
             value: 'edit',
             type: 'button',
