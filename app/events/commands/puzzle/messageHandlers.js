@@ -2,7 +2,7 @@ const Timer = require('easytimer.js');
 const _ = require('lodash');
 const { sprintf } = require('sprintf-js');
 
-const Messages = require('../../../constants/messages/puzzle');
+const Messages = require('../../../constants/messagesTemplates/puzzle');
 const Submission = require('../../../store/submission');
 
 /* eslint-disable no-use-before-define */

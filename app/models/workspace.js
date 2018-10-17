@@ -37,11 +37,6 @@ const Workspace = connection.define('workspace', {
     // https://api.slack.com/docs/token-types#workspace
     type: Sequelize.DataTypes.STRING(256),
   },
-  timezone: {
-    type: Sequelize.DataTypes.STRING,
-    defaultValue: '-8.0',
-  },
-
 });
 
 

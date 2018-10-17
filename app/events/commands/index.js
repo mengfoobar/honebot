@@ -1,6 +1,6 @@
 const { get } = require('lodash');
 const { parseMentionText } = require('../../utils/messageParser');
-const puzzleCommandHandler = require('./puzzle/index');
+const puzzleCommandHandler = require('./puzzle');
 const settingsCommandHandler = require('./settings');
 
 const commandHandlers = {

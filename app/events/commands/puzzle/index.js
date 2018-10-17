@@ -2,7 +2,7 @@
 const _ = require('lodash');
 
 const User = require('../../../store/user');
-const Messages = require('../../../constants/messages/puzzle');
+const Messages = require('../../../constants/messagesTemplates/puzzle');
 const { getFreshPuzzle } = require('../../../store/puzzle');
 const MessageHandler = require('./messageHandlers');
 

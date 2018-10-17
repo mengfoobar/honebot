@@ -1,6 +1,7 @@
 var env = require('node-env-file');
 env(__dirname + '/.env');
 const getStore = require('./app/store')
+require('./app/schedules/channel')
 
 
 if (!process.env.clientId || !process.env.clientSecret || !process.env.PORT) {

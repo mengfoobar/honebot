@@ -1,5 +1,5 @@
 const shortid = require('shortid');
-const Messages = require('../../../constants/messages/puzzle');
+const Messages = require('../../../constants/messagesTemplates/puzzle');
 const getWorkspaceDialog = require('../../../constants/dialogs/workspaceSettings');
 
 module.exports = {

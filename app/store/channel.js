@@ -32,7 +32,8 @@ module.exports = {
   all: async (callback) => {
     const channels = await ChannelModel.findAll({});
     const cleanedData = channels.map(channel => channel.toJSON());
-    callback(cleanedData);
+    callback && callback(cleanedData);
+    return channels;
   },
 
 };
