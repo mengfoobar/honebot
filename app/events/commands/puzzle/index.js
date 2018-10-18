@@ -2,33 +2,36 @@
 const _ = require('lodash');
 
 const User = require('../../../store/user');
+const SubmissionStore = require('../../../store/submission');
+const ChannelStore = require('../../../store/channel');
 const Messages = require('../../../constants/messagesTemplates/puzzle');
 const { getFreshPuzzle } = require('../../../store/puzzle');
 const MessageHandler = require('./messageHandlers');
 
 module.exports = {
-  start: (bot, event, configs = null) => {
+  start: async (bot, event, configs = null) => {
+    const { channel, user, team } = event;
+
     bot.startPrivateConversation(event, async (err, convo) => {
       convo.addQuestion(
         ...Messages.START_PUZZLE(async (convo) => {
-          const [user, isNew] = await User.save({
-            workspace: _.get(convo, 'context.bot.config.id', ''),
-            id: _.get(convo, 'context.user'),
-            channel: _.get(convo, 'context.channel'),
+          const [newUser, isNew] = await User.save({
+            workspace: team,
+            id: user,
+            channel,
           });
           // TODO: send some nice messages for new users
-          const freshPuzzle = await getFreshPuzzle(
-            _.get(convo, 'context.channel', null),
-          );
-          if (!freshPuzzle) {
+          const assignedPuzzle = await ChannelStore.getAssignedPuzzleForToday(channel);
+          if (!assignedPuzzle) {
             convo.addMessage({ text: Messages.OUT_OF_PUZZLES() });
             convo.next();
             return;
           }
 
-          freshPuzzle.messages.map((m) => {
+          assignedPuzzle.messages.map((m) => {
             MessageHandler[m.type]({
-              convo, bot, message: m, puzzle: freshPuzzle,
+              convo, bot, message: m, puzzle: assignedPuzzle,
+              originChannel: channel
             });
           });
         }),

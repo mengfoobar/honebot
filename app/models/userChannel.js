@@ -1,8 +1,8 @@
-const Sequelize = require('sequelize');
+const db = require('../db')
 const Channel = require('./channel');
 const User = require('./user')
 
-const UserChannel = Sequelize.define('user_channel');
+const UserChannel = db.define('UserChannel');
 User.belongsToMany(Channel, { through: UserChannel });
 
 Channel.belongsToMany(User, { through: UserChannel });

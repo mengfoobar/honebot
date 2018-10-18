@@ -19,17 +19,14 @@ const ScheduledMessage = connection.define('scheduled_message', {
     allowNull: false,
   },
   dateScheduled: {
-    type: Sequelize.DataTypes.STRING,
-    validate: {
-      is: /^([12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01]))$/,
-    },
+    type: Sequelize.DataTypes.DATEONLY,
     allowNull: false,
   },
   messageType: {
     type: Sequelize.DataTypes.STRING,
     allowNull: false,
   },
-  addtionalData: {
+  additionalData: {
     type: Sequelize.DataTypes.JSON,
   },
   // TODO: fill out rest after discussion with Dexter

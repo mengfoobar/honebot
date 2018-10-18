@@ -34,7 +34,7 @@ agenda.define('update_jobs', async (job, done) => {
     scheduledJobsChannelIds[j.channelId] = true;
   });
 
-  channelsWithActiveSchedule.forEach(async (c) => { // promise all?
+  channelsWithActiveSchedule.forEach(async (c) => {
     if (!scheduledJobsChannelIds[c.id]) {
       const {
         PUZZLE_SUBMISSION_OPEN,
@@ -59,6 +59,8 @@ agenda.define('update_jobs', async (job, done) => {
         moment().add(4, 'minutes').format('HH:mm'),
         c,
       );
+
+      ChannelStore.addFreshQuizForToday(c.id);
     }
   });
 });
@@ -70,14 +72,18 @@ agenda.define('channel_notification', async (job, done) => {
   const workspace = await WorkspaceStore.get(workspaceId);
 
   const slackPostChatUrl = 'https://slack.com/api/chat.postMessage';
-  const result = await axios.post(slackPostChatUrl, {
-    channel: channelId,
-    text: ScheduledMessagesTemplates[messageType](),
-  }, {
-    headers: {
-      authorization: `Bearer ${workspace.workspaceToken}`,
+  const result = await axios.post(
+    slackPostChatUrl,
+    {
+      channel: channelId,
+      text: ScheduledMessagesTemplates[messageType](),
     },
-  });
+    {
+      headers: {
+        authorization: `Bearer ${workspace.workspaceToken}`,
+      },
+    },
+  );
 
   // TODO: error handling
 
@@ -94,29 +100,27 @@ const scheduleNewMessage = (messageType, scheduledTime, channel) => {
     messageType,
   };
 
-  agenda.schedule(
-    scheduledTime,
-    'channel_notification',
-    submissionOpenJobAttr,
-  );
+  agenda.schedule(scheduledTime, 'channel_notification', submissionOpenJobAttr);
 
   ScheduledMessageStore.addNewScheduledMessage(submissionOpenJobAttr);
 };
-
 
 const isChannelScheduledForToday = (channel) => {
   const { schedule, isActive } = channel;
   if (!schedule) {
     return false;
-  } if (!isActive) {
+  }
+  if (!isActive) {
     return false;
-  } if (!schedule[moment().format('dddd').toLowerCase()]) {
+  }
+  if (!schedule[moment().format('dddd').toLowerCase()]) {
     return false;
   }
   return true;
 };
 
-(async function () { // IIFE to give access to async/await
+(async function () {
+  // IIFE to give access to async/await
   await agenda.start();
 
   await agenda.every('60 seconds', 'update_jobs');

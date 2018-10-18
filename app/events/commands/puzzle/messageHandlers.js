@@ -16,10 +16,10 @@ module.exports = {
     convo.next();
   },
   MC_QUESTION: ({
-    message, puzzle, convo, bot,
+    message, puzzle, convo, bot, originChannel,
   }) => {
     const timer = new Timer();
-    const { channel, user } = convo.context;
+    const { user } = convo.context;
     convo.addQuestion(
       {
         attachments: [
@@ -45,16 +45,17 @@ module.exports = {
 
           const submittedAnswer = _.get(reply, 'actions.0.value');
           const score = _.random(0, 10.0);
+          // eslint-disable-next-line eqeqeq
           const isAnswerCorrect = submittedAnswer == puzzle.correctAnswer;
 
           const [submission, created] = await Submission.save({
             duration: timeDuration,
             user,
-            channel,
             submittedAnswer,
             isAnswerCorrect,
             puzzle: puzzle.id,
             score,
+            channel: originChannel,
           });
 
           if (!created) {
