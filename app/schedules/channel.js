@@ -25,19 +25,6 @@ agenda.define('update_jobs', async (job, done) => {
     channelIdsWithActiveSchedule[a.id] = true;
   });
 
-
-  // // retrieves a list of currently scheduled channel notification jobs in mongodb
-  // const scheduledNotifications = await agenda.jobs({
-  //   name: 'channel_notification',
-  //   'data.messageType': ScheduledMessagesTemplates.PUZZLE_SUBMISSION_OPEN.name,
-  //   'data.dateScheduled': moment().format('YYYY-MM-DD'), // TODO: bit confusing. do some testing
-  //   nextRunAt: { $exists: true },
-  // }); // assuming this retrieves all active jobs
-  // const scheduledChannelIds = {};
-  // scheduledNotifications.forEach((a) => {
-  //   scheduledChannelIds[a.attrs.data.channelId] = true;
-  // });
-
   const scheduledJobs = await ScheduledMessageStore.getScheduledMessagesForDate(
     moment().format('YYYY-MM-DD'),
     ScheduledMessagesTemplates.PUZZLE_SUBMISSION_OPEN.name,

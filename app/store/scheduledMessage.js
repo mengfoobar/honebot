@@ -8,8 +8,10 @@ module.exports = {
     ...agendaJobData,
   }),
   getScheduledMessagesForDate: async (dateStr, messageType = null) => ScheduledMessage.findAll({
-    dateScheduled: dateStr,
-    messageType,
+    where: {
+      dateScheduled: dateStr,
+      messageType,
+    },
   }),
   get: async (id, callback) => {
 
