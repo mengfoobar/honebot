@@ -2,15 +2,21 @@
 const _ = require('lodash');
 
 const User = require('../../../store/user');
-const SubmissionStore = require('../../../store/submission');
 const ChannelStore = require('../../../store/channel');
 const Messages = require('../../../constants/messagesTemplates/puzzle');
-const { getFreshPuzzle } = require('../../../store/puzzle');
 const MessageHandler = require('./messageHandlers');
+const { isSubmissionWindowOpen } = require('../../../utils');
+
 
 module.exports = {
   start: async (bot, event, configs = null) => {
     const { channel, user, team } = event;
+    const channelInstance = await ChannelStore.get(channel);
+    if (!isSubmissionWindowOpen(channelInstance)) {
+      //TODO: add more sophisticated response (before, after...etc)
+      bot.reply(event, 'Submission window is not open. Only available from ...etc!');
+      return;
+    }
 
     bot.startPrivateConversation(event, async (err, convo) => {
       convo.addQuestion(
@@ -30,8 +36,11 @@ module.exports = {
 
           assignedPuzzle.messages.map((m) => {
             MessageHandler[m.type]({
-              convo, bot, message: m, puzzle: assignedPuzzle,
-              originChannel: channel
+              convo,
+              bot,
+              message: m,
+              puzzle: assignedPuzzle,
+              originChannel: channel,
             });
           });
         }),
