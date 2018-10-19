@@ -3,6 +3,7 @@ const _ = require('lodash');
 
 const User = require('../../../store/user');
 const ChannelStore = require('../../../store/channel');
+const SubmissionStore = require('../../../store/submission');
 const Messages = require('../../../constants/messagesTemplates/puzzle');
 const MessageHandler = require('./messageHandlers');
 const { isSubmissionWindowOpen } = require('../../../utils');
@@ -46,5 +47,5 @@ module.exports = {
         }),
       );
     });
-  },
+  }
 };

@@ -38,7 +38,7 @@ module.exports = {
       message.choices.map(m => ({
         pattern: m.value,
         callback: async (reply, convo) => {
-          const timeDuration = timer.getTimeValues().toString();
+          const {seconds} = timer.getTotalTimeValues();
           timer.stop();
           timer.removeEventListener('secondsUpdated', () => {});
           convo.stop();
@@ -47,9 +47,9 @@ module.exports = {
           const score = _.random(0, 10.0);
           // eslint-disable-next-line eqeqeq
           const isAnswerCorrect = submittedAnswer == puzzle.correctAnswer;
-
+          // TODO:
           const [submission, created] = await Submission.save({
-            duration: timeDuration,
+            duration: seconds,
             user,
             submittedAnswer,
             isAnswerCorrect,

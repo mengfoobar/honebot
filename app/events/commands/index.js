@@ -2,10 +2,12 @@ const { get } = require('lodash');
 const { parseMentionText } = require('../../utils/messageParser');
 const puzzleCommandHandler = require('./puzzle');
 const settingsCommandHandler = require('./settings');
+const leadboardCommandHandler = require('./leaderboard');
 
 const commandHandlers = {
   puzzle: puzzleCommandHandler,
   settings: settingsCommandHandler,
+  leaderboard: leadboardCommandHandler
 };
 
 module.exports = (controller) => {

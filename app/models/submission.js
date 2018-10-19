@@ -17,10 +17,7 @@ const Submission = connection.define('submission', {
     allowNull: false,
   },
   duration: {
-    type: Sequelize.DataTypes.STRING(256),
-    validate: {
-      is: /^(?:(?:([01]?\d|2[0-3]):)?([0-5]?\d):)?([0-5]?\d)$/,
-    },
+    type: Sequelize.DataTypes.INTEGER
   },
   isAnswerCorrect: {
     type: Sequelize.DataTypes.BOOLEAN,
