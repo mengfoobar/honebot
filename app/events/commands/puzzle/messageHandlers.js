@@ -50,12 +50,12 @@ module.exports = {
           // TODO:
           const [submission, created] = await Submission.save({
             duration: seconds,
-            user,
+            userId: user,
             submittedAnswer,
             isAnswerCorrect,
-            puzzle: puzzle.id,
+            puzzleId: puzzle.id,
             score,
-            channel: originChannel,
+            channelId: originChannel,
           });
 
           if (!created) {
@@ -111,11 +111,11 @@ const handleTimerSecondsUpdated = (timer, bot, convo, puzzle) => {
 
       const [submission, created] = await Submission.save({
         duration: timer.getTimeValues().toString(),
-        user,
-        channel,
+        userId: user,
+        channelId: channel,
         submittedAnswer: null,
         isAnswerCorrect: false,
-        puzzle: puzzle.id,
+        puzzleId: puzzle.id,
         score: 0,
       });
     }

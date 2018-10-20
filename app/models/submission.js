@@ -5,6 +5,7 @@ const Puzzle = require('./puzzle');
 const Channel = require('./channel');
 const User = require('./user');
 
+
 const Submission = connection.define('submission', {
   id: {
     type: Sequelize.DataTypes.INTEGER,
@@ -23,31 +24,14 @@ const Submission = connection.define('submission', {
     type: Sequelize.DataTypes.BOOLEAN,
     allowNull: false,
   },
-  puzzle: {
-    type: Sequelize.DataTypes.STRING(256),
-    references: {
-      model: Puzzle,
-      key: 'id',
-    },
-  },
-  channel: {
-    type: Sequelize.DataTypes.STRING(256),
-    references: {
-      model: Channel,
-      key: 'id',
-    },
-  },
-  user: {
-    type: Sequelize.DataTypes.STRING(256),
-    references: {
-      model: User,
-      key: 'id',
-    },
-  },
   submittedAnswer: {
     type: Sequelize.DataTypes.STRING(256),
   },
 });
+
+Submission.belongsTo(Puzzle, { foreignKey: 'puzzleId' });
+Submission.belongsTo(Channel, { foreignKey: 'channelId' });
+Submission.belongsTo(User, { foreignKey: 'userId' });
 
 Submission.sync();
 
