@@ -3,7 +3,7 @@ const Sequelize = require('sequelize');
 const connection = require('../db');
 const Puzzle = require('./puzzle');
 const Channel = require('./channel');
-const User = require('./user')
+const User = require('./user');
 
 const Submission = connection.define('submission', {
   id: {
@@ -17,14 +17,14 @@ const Submission = connection.define('submission', {
     allowNull: false,
   },
   duration: {
-    type: Sequelize.DataTypes.INTEGER
+    type: Sequelize.DataTypes.INTEGER,
   },
   isAnswerCorrect: {
     type: Sequelize.DataTypes.BOOLEAN,
     allowNull: false,
   },
   puzzle: {
-    type: Sequelize.STRING(256),
+    type: Sequelize.DataTypes.STRING(256),
     references: {
       model: Puzzle,
       key: 'id',

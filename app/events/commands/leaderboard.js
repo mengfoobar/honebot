@@ -15,8 +15,10 @@ module.exports = {
     const leaderboardMessage = results
       .map(
         (r, index) => {
-          const data = r.toJSON()
-          return `${index+1}. @${data.user} - total score: ${parseFloat(data.totalScore).toFixed(2)}, average time taken: ${parseFloat(data.avgDuration).toFixed(2)}s`
+          const data = r.toJSON();
+          return `${index + 1}. @${data.user} - total score: ${
+            parseFloat(data.totalScore).toFixed(2)
+          }, average time taken: ${parseFloat(data.avgDuration).toFixed(2)}s`;
         },
       )
       .join('\n');

@@ -3,8 +3,7 @@
 const User = require('../models/user');
 
 module.exports = {
-  get: async (id, cb) => {
-  },
+  get: async (id, cb) => User.findById(id),
   save: async (data) => {
     // TODO: handle updating here as well
 
@@ -19,4 +18,14 @@ module.exports = {
   },
   all(cb) {
   },
+  getUserInfoFrom3rdParty: (bot, userId) => new Promise((resolve, reject) => {
+    bot.api.users.info({ user: userId }, (err, info) => {
+      // check if it's the right user using info.user.name or info.user.id
+      if (!err) {
+        resolve(info.user);
+      } else {
+        reject(err);
+      }
+    });
+  }),
 };
