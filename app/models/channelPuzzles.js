@@ -13,7 +13,7 @@ Puzzle.belongsToMany(Channel, { through: ChannelPuzzles });
 
 
 ChannelPuzzles.sync().then(() => {
-  console.log('Succesfully synced channelpuzzle to mysql');
+  console.log('Successfully synced channelpuzzle to mysql');
 })
 
 module.exports = ChannelPuzzles

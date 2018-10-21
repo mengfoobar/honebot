@@ -21,16 +21,6 @@ module.exports = {
     ],
 
   }),
-  getSubmissionsForPuzzle: async (channelId, puzzleId) => Submission.findAll({
-    where: {
-      channelId,
-      puzzleId,
-    },
-    order: [
-      ['createdAt', 'DESC'],
-    ],
-
-  }),
   getSubmissionForPuzzle: async (userId, puzzleId) => Submission.findAll({
     where: {
       userId,
@@ -40,7 +30,7 @@ module.exports = {
       ['createdAt', 'DESC'],
     ],
   }),
-  getLeaderboardResults: async (channelId, aggregateType) => {
+  getAggregateLeaderboard: async (channelId, aggregateType) => {
     const channel = await Channel.findById(channelId);
     const { timezone } = channel;
     const adjustedMoment = moment().utcOffset(timezone);
@@ -82,6 +72,16 @@ module.exports = {
       group: ['userId'],
     });
   },
+  getSubmissionsForPuzzle: async (channelId, puzzleId) => Submission.findAll({
+    where: {
+      puzzleId,
+      channelId,
+    },
+    include: [User],
+    order: [
+      ['score', 'DESC'],
+    ],
+  }),
   get: async (id, callback) => {
 
   },

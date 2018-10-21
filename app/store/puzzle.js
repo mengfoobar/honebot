@@ -7,8 +7,8 @@ module.exports = {
   getFreshPuzzle: async (channelId) => {
     const freshPuzzles = await db.query(sprintf(
       'SELECT * from puzzles where id NOT IN '
-      + '(SELECT DISTINCT `puzzle` from submissions '
-      + "where `channel` = '%s')"
+      + '(SELECT DISTINCT `puzzleId` from submissions '
+      + "where `channelId` = '%s')"
       + ' ORDER BY RAND() LIMIT 1', channelId,
     ), { model: Puzzle });
 

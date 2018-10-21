@@ -39,6 +39,7 @@ module.exports = {
         pattern: m.value,
         callback: async (reply, convo) => {
           const {seconds} = timer.getTotalTimeValues();
+          const timeDurationAsString = timer.getTimeValues().toString()
           timer.stop();
           timer.removeEventListener('secondsUpdated', () => {});
           convo.stop();
@@ -67,7 +68,7 @@ module.exports = {
             bot.say({
               text: `${Messages.CORRECT_ANSWER()}.\n ${sprintf(
                 Messages.SUBMISSION_RESULT_CORRECT_ANSWER(),
-                timeDuration,
+                timeDurationAsString,
                 score,
               )}`,
               channel: user,

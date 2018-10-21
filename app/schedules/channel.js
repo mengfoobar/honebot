@@ -42,25 +42,31 @@ agenda.define('update_jobs', async (job, done) => {
         SUBMISSION_CLOSING_REMINDER,
       } = ScheduledMessagesTemplates;
 
-      scheduleNewMessage(
-        PUZZLE_SUBMISSION_OPEN.name,
-        moment().add(2, 'minutes').format('HH:mm'),
-        c,
-      );
+      const puzzle = await ChannelStore.addFreshQuizForToday(c.id);
+      if (puzzle) {
+        scheduleNewMessage(
+          PUZZLE_SUBMISSION_OPEN.name,
+          moment().add(2, 'minutes').format('HH:mm'),
+          c,
+        );
 
-      scheduleNewMessage(
-        SUBMISSION_CLOSING_REMINDER.name,
-        moment().add(3, 'minutes').format('HH:mm'),
-        c,
-      );
+        scheduleNewMessage(
+          SUBMISSION_CLOSING_REMINDER.name,
+          moment().add(3, 'minutes').format('HH:mm'),
+          c,
+        );
 
-      scheduleNewMessage(
-        PUZZLE_SUBMISSION_CLOSED.name,
-        moment().add(4, 'minutes').format('HH:mm'),
-        c,
-      );
-
-      ChannelStore.addFreshQuizForToday(c.id);
+        scheduleNewMessage(
+          PUZZLE_SUBMISSION_CLOSED.name,
+          moment().add(4, 'minutes').format('HH:mm'),
+          c,
+          {
+            puzzleId: puzzle.id,
+          },
+        );
+      } else {
+        // TODO: send message saying no more puzzles
+      }
     }
   });
 });
@@ -68,15 +74,19 @@ agenda.define('update_jobs', async (job, done) => {
 agenda.define('channel_notification', async (job, done) => {
   // TODO: have bot send notification to channel based on type
   // TODO: if no persistent storage after job ran, add entry to mongodb at done
-  const { workspaceId, channelId, messageType } = job.attrs.data;
+  const {
+    workspaceId, channelId, messageType, puzzleId,
+  } = job.attrs.data;
   const workspace = await WorkspaceStore.get(workspaceId);
+
+  const message = await ScheduledMessagesTemplates[messageType](job.attrs.data);
 
   const slackPostChatUrl = 'https://slack.com/api/chat.postMessage';
   const result = await axios.post(
     slackPostChatUrl,
     {
       channel: channelId,
-      text: ScheduledMessagesTemplates[messageType](),
+      text: message,
     },
     {
       headers: {
@@ -90,7 +100,7 @@ agenda.define('channel_notification', async (job, done) => {
   done();
 });
 
-const scheduleNewMessage = (messageType, scheduledTime, channel) => {
+const scheduleNewMessage = (messageType, scheduledTime, channel, additionalConfigs = {}) => {
   const day = moment().format('dddd').toLowerCase();
 
   const submissionOpenJobAttr = {
@@ -98,6 +108,7 @@ const scheduleNewMessage = (messageType, scheduledTime, channel) => {
     dateScheduled: moment().format('YYYY-MM-DD'),
     workspaceId: channel.workspace,
     messageType,
+    ...additionalConfigs,
   };
 
   agenda.schedule(scheduledTime, 'channel_notification', submissionOpenJobAttr);
@@ -120,8 +131,7 @@ const isChannelScheduledForToday = (channel) => {
 };
 
 (async function () {
-  // IIFE to give access to async/await
   await agenda.start();
-
+  // TODO: add this to configs
   await agenda.every('60 seconds', 'update_jobs');
 }());

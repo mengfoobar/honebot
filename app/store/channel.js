@@ -49,6 +49,7 @@ module.exports = {
     await channel.addPuzzle(freshPuzzle, {
       through: { dateScheduled: moment().format('YYYY-MM-DD') },
     });
+    return freshPuzzle;
   },
   getAssignedPuzzleForToday: async (channelId) => {
     const channels = await ChannelModel.findAll({
