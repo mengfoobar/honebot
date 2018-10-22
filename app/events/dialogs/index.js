@@ -1,9 +1,8 @@
-const WorkspaceStore = require('../../store/workspace');
+const ChannelStore = require('../../store/channel');
 const { parseDynamicId } = require('../../utils/idGenerator');
 
 module.exports = (controller) => {
   controller.on('dialog_submission', (bot, e) => {
-    // TODO: save settings in workspace/channel
     const key = parseDynamicId(e.callback_id);
     handleDialogCallback[key](bot, e);
   });
@@ -12,12 +11,13 @@ module.exports = (controller) => {
 const handleDialogCallback = {
   settings: async (bot, e) => {
     const { submission } = e;
-    const updateResult = await WorkspaceStore.update(bot.team_info.id, {
+    const updateResult = await ChannelStore.update(e.channel, {
       timezone: submission.timezone,
+      isActive: submission.isActive,
     });
-
+    // TODO: do something with result
+    // TODO: update reply message
     bot.reply(e, 'Got it!');
-    // call dialogOk or else Slack will think this is an error
     bot.dialogOk();
   },
 };

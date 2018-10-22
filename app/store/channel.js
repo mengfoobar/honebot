@@ -19,6 +19,10 @@ module.exports = {
     callback && callback(null, channel.toJSON());
     return channel;
   },
+  update: async (id, params) => {
+    const channel = await ChannelModel.findById(id);
+    return channel.update(params);
+  },
   save: async (rawData, callback) => {
     // TODO: handle updating here as well
     const cleanedData = cleanBotkitDataToModel(rawData);
