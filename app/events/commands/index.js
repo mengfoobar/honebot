@@ -1,4 +1,5 @@
 const { get } = require('lodash');
+const { misc } = require('../../constants/messagesTemplates');
 const { parseMentionText } = require('../../utils/messageParser');
 const puzzleCommandHandler = require('./puzzle');
 const settingsCommandHandler = require('./settings');
@@ -20,8 +21,7 @@ module.exports = (controller) => {
     if (handler) {
       handler && handler(bot, e, configs);
     } else {
-      // TODO list commands
-      bot.reply(e, "Uh I didn't understand that. Hit me with one of these commands instead: ");
+      bot.reply(e, misc.UNKNOWN_COMMAND());
     }
   });
 

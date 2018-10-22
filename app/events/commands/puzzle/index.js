@@ -3,7 +3,7 @@ const _ = require('lodash');
 
 const UserStore = require('../../../store/user');
 const ChannelStore = require('../../../store/channel');
-const Messages = require('../../../constants/messagesTemplates/puzzle');
+const MessageTemplates = require('../../../constants/messagesTemplates');
 const MessageHandler = require('./messageHandlers');
 const { isSubmissionWindowOpen } = require('../../../utils');
 
@@ -14,13 +14,13 @@ module.exports = {
     const channelInstance = await ChannelStore.get(channel);
     if (!isSubmissionWindowOpen(channelInstance)) {
       // TODO: add more sophisticated response (before, after...etc)
-      bot.reply(event, 'Submission window is not open. Only available from ...etc!');
+      bot.reply(event, MessageTemplates.scheduled.SUBMISSION_WINDOW_NOT_OPEN);
       return;
     }
 
     bot.startPrivateConversation(event, async (err, convo) => {
       convo.addQuestion(
-        ...Messages.START_PUZZLE(async (convo) => {
+        ...MessageTemplates.puzzle.START_PUZZLE(async (convo) => {
           const userInstance = await UserStore.get(user);
           if (!userInstance) {
             const user3rdPartyInfo = await UserStore.getUserInfoFrom3rdParty(bot, user);
@@ -34,7 +34,7 @@ module.exports = {
           // TODO: send some nice messages for new users
           const assignedPuzzle = await ChannelStore.getAssignedPuzzleForToday(channel);
           if (!assignedPuzzle) {
-            convo.addMessage({ text: Messages.OUT_OF_PUZZLES() });
+            convo.addMessage({ text: MessageTemplates.puzzle.OUT_OF_PUZZLES() });
             convo.next();
             return;
           }
