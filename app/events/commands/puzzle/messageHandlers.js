@@ -49,7 +49,7 @@ module.exports = {
           // eslint-disable-next-line eqeqeq
           const isAnswerCorrect = submittedAnswer == puzzle.correctAnswer;
           const score = computeSubmissionScore(puzzle.difficulty, seconds, isAnswerCorrect);
-          const [created] = await Submission.save({
+          const [submission, created] = await Submission.save({
             duration: seconds,
             userId: user,
             submittedAnswer,
@@ -58,11 +58,6 @@ module.exports = {
             score,
             channelId: originChannel,
           });
-
-          if (!created) {
-            bot.say({ text: Messages.ALREADY_SUBMITTED(), channel: user });
-            return;
-          }
 
           if (isAnswerCorrect) {
             bot.say({

@@ -12,6 +12,10 @@ module.exports = {
     where: { puzzleId: data.puzzleId, userId: data.userId, channelId: data.channelId },
     defaults: data,
   }),
+  hasUserSubmittedForPuzzle: async (userId, puzzleId) => {
+    const totalSubmissions = await Submission.count({ where: { userId, puzzleId } });
+    return totalSubmissions > 0;
+  },
   getSubmissionsForUser: async userId => Submission.findAll({
     where: {
       userId,

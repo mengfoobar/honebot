@@ -3,6 +3,7 @@ const _ = require('lodash');
 
 const UserStore = require('../../../store/user');
 const ChannelStore = require('../../../store/channel');
+const SubmissionStore = require('../../../store/submission');
 const MessageTemplates = require('../../../constants/messagesTemplates');
 const MessageHandler = require('./messageHandlers');
 const { isSubmissionWindowOpen } = require('../../../utils');
@@ -39,15 +40,23 @@ module.exports = {
             return;
           }
 
-          assignedPuzzle.messages.map((m) => {
-            MessageHandler[m.type]({
-              convo,
-              bot,
-              message: m,
-              puzzle: assignedPuzzle,
-              originChannel: channel,
+          const hasUserSubmittedForPuzzle = await SubmissionStore.hasUserSubmittedForPuzzle(
+            user, assignedPuzzle.id,
+          );
+
+          if (hasUserSubmittedForPuzzle) {
+            bot.say({ text: MessageTemplates.puzzle.ALREADY_SUBMITTED(), channel: user });
+          } else {
+            assignedPuzzle.messages.map((m) => {
+              MessageHandler[m.type]({
+                convo,
+                bot,
+                message: m,
+                puzzle: assignedPuzzle,
+                originChannel: channel,
+              });
             });
-          });
+          }
         }),
       );
     });
