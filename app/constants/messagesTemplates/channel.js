@@ -1,3 +1,5 @@
+const moment = require('moment');
+
 module.exports = {
   PUZLR_JOINED_CHANNEL: () => "What's happening peeps! Puzlr in da house",
   LEADERBOARD_RESULTS: (submissions) => {
@@ -18,5 +20,14 @@ module.exports = {
       leaderboardMessage = 'No submissions yet';
     }
     return leaderboardMessage;
+  },
+  FIRST_PUZZLE_STARTS_ON: (channel) => {
+    const startDate = moment().utcOffset(channel.timezone).add(1, 'days');
+
+    const startDay = ['Saturday', 'Sunday'].includes(startDate.format('dddd'))
+      ? 'monday' : startDate.format('dddd').toLowerCase();
+
+    return `Your first puzzle will start on ${startDay} at ${
+      channel.schedule[startDay].start}`;
   },
 };

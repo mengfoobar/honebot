@@ -23,16 +23,13 @@ module.exports = {
     const channel = await ChannelModel.findById(id);
     return channel.update(params);
   },
-  save: async (rawData, callback) => {
-    // TODO: handle updating here as well
+  save: async (rawData) => {
     const cleanedData = cleanBotkitDataToModel(rawData);
 
-    await ChannelModel.findOrCreate({
+    return ChannelModel.findOrCreate({
       where: { id: cleanedData.id },
       defaults: cleanedData,
     });
-
-    callback();
   },
   delete: async (id, callback) => {
     const channel = await ChannelModel.findById(id);
