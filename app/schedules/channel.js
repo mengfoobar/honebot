@@ -42,23 +42,26 @@ agenda.define('update_jobs', async (job, done) => {
         SUBMISSION_CLOSING_REMINDER,
       } = ScheduledMessagesTemplates;
 
+      const dateStr = moment().utcOffset(c.timezone).format('YYYY-MM-DD');
+      const day = moment().utcOffset(c.timezone).format('dddd').toLowerCase();
+
       const puzzle = await ChannelStore.addFreshQuizForToday(c.id);
       if (puzzle) {
         scheduleNewMessage(
           PUZZLE_SUBMISSION_OPEN.name,
-          moment().add(2, 'minutes').format('HH:mm'),
+          moment(`${dateStr} ${c.schedule[day].start}`).utcOffset(c.timezone),
           c,
         );
 
         scheduleNewMessage(
           SUBMISSION_CLOSING_REMINDER.name,
-          moment().add(3, 'minutes').format('HH:mm'),
+          moment(`${dateStr} ${c.schedule[day].end}`).subtract(5, 'minutes').utcOffset(c.timezone),
           c,
         );
 
         scheduleNewMessage(
           PUZZLE_SUBMISSION_CLOSED.name,
-          moment().add(4, 'minutes').format('HH:mm'),
+          moment(`${dateStr} ${c.schedule[day].end}`).utcOffset(c.timezone),
           c,
           {
             puzzleId: puzzle.id,
@@ -101,11 +104,13 @@ agenda.define('channel_notification', async (job, done) => {
 });
 
 const scheduleNewMessage = (messageType, scheduledTime, channel, additionalConfigs = {}) => {
-  const day = moment().format('dddd').toLowerCase();
+  const adjustedMoment = moment().utcOffset(channel.timezone);
+  const day = adjustedMoment.format('dddd').toLowerCase();
+  const dateStr = adjustedMoment.format('YYYY-MM-DD');
 
   const submissionOpenJobAttr = {
     channelId: channel.id,
-    dateScheduled: moment().format('YYYY-MM-DD'),
+    dateScheduled: dateStr,
     workspaceId: channel.workspace,
     messageType,
     ...additionalConfigs,
