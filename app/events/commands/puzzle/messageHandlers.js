@@ -4,6 +4,7 @@ const { sprintf } = require('sprintf-js');
 
 const Messages = require('../../../constants/messagesTemplates/puzzle');
 const Submission = require('../../../store/submission');
+const { computeSubmissionScore } = require('../../../utils/index');
 
 /* eslint-disable no-use-before-define */
 module.exports = {
@@ -38,18 +39,17 @@ module.exports = {
       message.choices.map(m => ({
         pattern: m.value,
         callback: async (reply, convo) => {
-          const {seconds} = timer.getTotalTimeValues();
-          const timeDurationAsString = timer.getTimeValues().toString()
+          const { seconds } = timer.getTotalTimeValues();
+          const timeDurationAsString = timer.getTimeValues().toString();
           timer.stop();
           timer.removeEventListener('secondsUpdated', () => {});
           convo.stop();
 
           const submittedAnswer = _.get(reply, 'actions.0.value');
-          const score = _.random(0, 10.0);
           // eslint-disable-next-line eqeqeq
           const isAnswerCorrect = submittedAnswer == puzzle.correctAnswer;
-          // TODO:
-          const [submission, created] = await Submission.save({
+          const score = computeSubmissionScore(puzzle.difficulty, seconds, isAnswerCorrect);
+          const [created] = await Submission.save({
             duration: seconds,
             userId: user,
             submittedAnswer,
