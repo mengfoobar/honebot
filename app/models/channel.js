@@ -53,7 +53,7 @@ const Channel = connection.define('channel', {
   },
   timezone: {
     type: Sequelize.DataTypes.STRING,
-    defaultValue: '-8.0',
+    defaultValue: '-08:00',
   },
 
 });

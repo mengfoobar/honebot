@@ -6,11 +6,9 @@ require('./app/schedules/channel')
 
 if (!process.env.clientId || !process.env.clientSecret || !process.env.PORT) {
   usage_tip();
-  // process.exit(1);
 }
 
 var Botkit = require('botkit');
-var debug = require('debug')('botkit:main');
 
 var bot_options = {
     clientId: process.env.clientId,
