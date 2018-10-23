@@ -20,6 +20,6 @@ module.exports = {
     }
 
     const maxDurationInSeconds = PuzzleDuration[puzzleDifficulty].asSeconds();
-    return (timeTakenInSeconds / maxDurationInSeconds) * 100.0;
+    return ((1 - (timeTakenInSeconds / maxDurationInSeconds)) * 100).toFixed(2);
   },
 };

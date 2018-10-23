@@ -49,19 +49,19 @@ agenda.define('update_jobs', async (job, done) => {
       if (puzzle) {
         scheduleNewMessage(
           PUZZLE_SUBMISSION_OPEN.name,
-          moment(`${dateStr} ${c.schedule[day].start}`).utcOffset(c.timezone),
+          moment(`${dateStr} ${c.schedule[day].start}`, 'YYYY-MM-DD hh:mm A').utcOffset(c.timezone, true),
           c,
         );
 
         scheduleNewMessage(
           SUBMISSION_CLOSING_REMINDER.name,
-          moment(`${dateStr} ${c.schedule[day].end}`).subtract(5, 'minutes').utcOffset(c.timezone),
+          moment(`${dateStr} ${c.schedule[day].end}`, 'YYYY-MM-DD hh:mm A').subtract(2, 'minutes').utcOffset(c.timezone, true),
           c,
         );
 
         scheduleNewMessage(
           PUZZLE_SUBMISSION_CLOSED.name,
-          moment(`${dateStr} ${c.schedule[day].end}`).utcOffset(c.timezone),
+          moment(`${dateStr} ${c.schedule[day].end}`, 'YYYY-MM-DD hh:mm A').utcOffset(c.timezone, true),
           c,
           {
             puzzleId: puzzle.id,
@@ -75,8 +75,6 @@ agenda.define('update_jobs', async (job, done) => {
 });
 
 agenda.define('channel_notification', async (job, done) => {
-  // TODO: have bot send notification to channel based on type
-  // TODO: if no persistent storage after job ran, add entry to mongodb at done
   const {
     workspaceId, channelId, messageType, puzzleId,
   } = job.attrs.data;
@@ -116,7 +114,7 @@ const scheduleNewMessage = (messageType, scheduledTime, channel, additionalConfi
     ...additionalConfigs,
   };
 
-  agenda.schedule(scheduledTime, 'channel_notification', submissionOpenJobAttr);
+  agenda.schedule(scheduledTime.toDate(), 'channel_notification', submissionOpenJobAttr);
 
   ScheduledMessageStore.addNewScheduledMessage(submissionOpenJobAttr);
 };
@@ -137,6 +135,6 @@ const isChannelScheduledForToday = (channel) => {
 
 (async function () {
   await agenda.start();
-  // TODO: add this to configs
+  await agenda.cancel({ name: 'update_jobs' });
   await agenda.every('60 seconds', 'update_jobs');
 }());
