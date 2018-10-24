@@ -6,11 +6,15 @@ module.exports = (controller) => {
     const [channel, isNew] = await ChannelStore.save(event);
     bot.say({
       channel: channel.id,
-      text: MessageTemplates.channel.PUZLR_JOINED_CHANNEL(),
+      text: MessageTemplates.channel.JOINED_CHANNEL(channel),
     });
-    bot.say({
-      channel: channel.id,
-      text: MessageTemplates.channel.FIRST_PUZZLE_STARTS_ON(channel),
-    });
+
+    setTimeout(() => {
+      bot.say({
+        channel: channel.id,
+        text: MessageTemplates.channel.FIRST_PUZZLE_STARTS_ON(channel),
+      });
+    },
+    2000);
   });
 };

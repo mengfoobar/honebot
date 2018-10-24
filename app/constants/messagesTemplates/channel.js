@@ -1,7 +1,23 @@
 const moment = require('moment');
 
 module.exports = {
-  PUZLR_JOINED_CHANNEL: () => "What's happening peeps! Puzlr in da house",
+  JOINED_CHANNEL: () => [
+    'Hi!',
+    'I schedule fun, 10 minutes programming puzzles for your team!',
+    'Engage in friendly competitions to see who is office champ :muscle:',
+    '',
+    'Here are a few things you need know about me :wink:',
+    '',
+    '- please *configure your workspace timezone, desired schedule* using `@puzlr settings`',
+    '- once submission window is open, type `@puzlr start` to start on puzzle',
+    '- type `@puzlr leaderboard` to see results for the week',
+    '- type `@puzlr help` to see list of commands',
+    '',
+    '',
+    'Some other useful information:',
+    '- leaderboard is reset every week so there is always room for a new office champ :+1:',
+    '- updates to settings can take up to a day to be in effect',
+  ].join('\n'),
   LEADERBOARD_RESULTS: (submissions) => {
     let leaderboardMessage;
 
@@ -27,7 +43,7 @@ module.exports = {
     const startDay = ['Saturday', 'Sunday'].includes(startDate.format('dddd'))
       ? 'monday' : startDate.format('dddd').toLowerCase();
 
-    return `Your first puzzle will start on ${startDay} at ${
-      channel.schedule[startDay].start}`;
+    return `Your first puzzle will be available starting *${startDate.format('dddd')}* at *${
+      channel.schedule[startDay].start}*`;
   },
 };

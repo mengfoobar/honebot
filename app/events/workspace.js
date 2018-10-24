@@ -1,7 +1,7 @@
 const MessageTemplates = require('../constants/messagesTemplates/workspace')
 
 module.exports = (controller) => {
-  controller.on('onboard', (bot) => {
+  controller.on('onboard', async (bot) => {
     bot.startPrivateConversation(
       { user: bot.config.createdBy },
       (err, convo) => {
