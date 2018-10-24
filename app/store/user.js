@@ -24,6 +24,7 @@ module.exports = {
       if (!err) {
         resolve(info.user);
       } else {
+        console.log(err)
         reject(err);
       }
     });

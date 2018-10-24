@@ -29,7 +29,7 @@ module.exports = {
               workspace: team,
               id: user,
               channel,
-              fullName: user3rdPartyInfo.name,
+              userName: user3rdPartyInfo.name,
             });
           }
           // TODO: send some nice messages for new users
