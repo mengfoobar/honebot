@@ -15,7 +15,7 @@ module.exports = {
     const channelInstance = await ChannelStore.get(channel);
     if (!isSubmissionWindowOpen(channelInstance)) {
       // TODO: add more sophisticated response (before, after...etc)
-      bot.reply(event, MessageTemplates.scheduled.SUBMISSION_WINDOW_NOT_OPEN);
+      bot.reply(event, MessageTemplates.scheduled.SUBMISSION_WINDOW_NOT_OPEN(channelInstance));
       return;
     }
 

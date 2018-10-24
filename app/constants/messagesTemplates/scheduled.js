@@ -19,8 +19,8 @@ module.exports = {
     return `Submissions closed! \nHere are the results: \n${submissionsStr}`;
   },
   SUBMISSION_WINDOW_NOT_OPEN: (channel) => {
-    const adjustedMoment = moment().utcOffset(channel.timezone);
-    const daySchedule = channel.schedule[adjustedMoment.format('dddd').toLowerCase()];
+    const todayDate = moment().utcOffset(channel.timezone);
+    const daySchedule = channel.schedule[todayDate.format('dddd').toLowerCase()];
     return `Submission window is not open. Will be available from ${daySchedule.start} - ${daySchedule.end}`;
   },
 };
