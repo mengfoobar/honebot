@@ -1,5 +1,5 @@
 const moment = require('moment');
-const _ = require('lodash')
+const _ = require('lodash');
 
 module.exports = {
   JOINED_CHANNEL: () => [
@@ -20,23 +20,26 @@ module.exports = {
     '- updates to settings can take up to a day to be in effect',
   ].join('\n'),
   LEADERBOARD_RESULTS: (submissions) => {
-    let leaderboardMessage;
+    let leaderboardMessage = [];
+
+    leaderboardMessage.push('Here are the results so far for this week!');
+    leaderboardMessage.push('');
 
     if (submissions && submissions.length > 0) {
-      leaderboardMessage = submissions
-        .map(
+      submissions
+        .forEach(
           (r, index) => {
             const data = r.toJSON();
-            return `${index + 1}. ${r.user.userName} - total score: ${
+            leaderboardMessage.push(`${index + 1}. *${r.user.userName}*: Score *${
               parseFloat(data.totalScore).toFixed(2)
-            }, average time taken: ${parseFloat(data.avgDuration).toFixed(2)}s`;
+            }*, Avg. Time Taken *${parseFloat(data.avgDuration).toFixed(2)}s*`);
           },
-        )
-        .join('\n');
+        );
+      // TODO: mention top 3 scorers if > 3, else mention top 1
     } else {
-      leaderboardMessage = 'No submissions yet';
+      leaderboardMessage = 'No submissions yet!';
     }
-    return leaderboardMessage;
+    return leaderboardMessage.join('\n');
   },
   FIRST_PUZZLE_STARTS_ON: (channel) => {
     const startDate = moment().utcOffset(channel.timezone).add(1, 'days');

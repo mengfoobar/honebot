@@ -4,7 +4,7 @@ module.exports = {
   START_PUZZLE: cb => [{
     attachments: [
       {
-        title: 'Why hello there! Click Start to begin the puzzle.\n Remember you have up to 5 minutes to complete it!',
+        title: 'Why hello there! Click Start to begin the puzzle.\n Remember you have up to 10 minutes to complete it!',
         callback_id: generateDynamicId('start_puzzle'),
         actions: [
           {
