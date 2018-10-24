@@ -5,6 +5,11 @@ const misc = require('./misc');
 const channel = require('./channel');
 const workspace = require('./workspace');
 
+/*
+  RULE OF THUMB
+  no network calls in message templates
+ */
+
 module.exports = {
   help,
   puzzle,

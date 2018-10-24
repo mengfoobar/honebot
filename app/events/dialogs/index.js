@@ -1,9 +1,11 @@
 const ChannelStore = require('../../store/channel');
 const { parseDynamicId } = require('../../utils/idGenerator');
+const MessageTemplates = require('../../constants/messagesTemplates');
 
 module.exports = (controller) => {
   controller.on('dialog_submission', (bot, e) => {
     const key = parseDynamicId(e.callback_id);
+    // TODO: add handling for unknown dialogs
     handleDialogCallback[key](bot, e);
   });
 };
@@ -11,13 +13,20 @@ module.exports = (controller) => {
 const handleDialogCallback = {
   settings: async (bot, e) => {
     const { submission } = e;
-    const updateResult = await ChannelStore.update(e.channel, {
+    const channel = await ChannelStore.get(e.channel);
+    const updatedChannel = await ChannelStore.update(e.channel, {
       timezone: submission.timezone,
-      isActive: submission.isActive,
+      isActive: parseInt(submission.isActive, 10),
     });
-    // TODO: do something with result
-    // TODO: update reply message
-    bot.reply(e, 'Got it!');
+    const messages = [];
+    messages.push(MessageTemplates.channel.SETTINGS_UPDATED());
+
+    if (updatedChannel.isActive && !channel.isActive) {
+      messages.push(MessageTemplates.channel.CHANNEL_REACTIVATED(updatedChannel));
+    } else if (!updatedChannel.isActive && channel.isActive) {
+      messages.push(MessageTemplates.channel.CHANNEL_DEACTIVATED());
+    }
+    bot.reply(e, messages.join('\n'));
     bot.dialogOk();
   },
 };
