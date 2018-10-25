@@ -1,5 +1,6 @@
 const moment = require('moment');
 const SubmissionStore = require('../../store/submission');
+const { THIS_WEEK } = require('../../constants/leaderboardAggregateType');
 
 module.exports = {
   PUZZLE_SUBMISSION_OPEN: () => 'Puzzle submissions are now open :raised_hands: \nRun the command `@puzlr start` to start.',
@@ -32,5 +33,38 @@ module.exports = {
     const todayDate = moment().utcOffset(channel.timezone);
     const daySchedule = channel.schedule[todayDate.format('dddd').toLowerCase()];
     return `Submission window is not open yet. Will be available from ${daySchedule.start} - ${daySchedule.end}`;
+  },
+  WEEK_END_SUMMARY: async ({channelId}) => {
+    const results = await SubmissionStore.getAggregateLeaderboard(
+      channelId,
+      THIS_WEEK,
+    );
+
+    const message = [];
+
+    message.push('And we are done!');
+    message.push('');
+    message.push('');
+
+    if (results && results.length > 0) {
+      message.push('Here are the results for this week:');
+      message.push('');
+      results
+        .forEach(
+          (r, index) => {
+            const data = r.toJSON();
+            message.push(`${index + 1}. *${r.user.userName}*: Score *${
+              parseFloat(data.totalScore).toFixed(2)
+            }*, Avg. Time Taken *${parseFloat(data.avgDuration).toFixed(2)}s*`);
+          },
+        );
+      message.push('');
+      message.push('Good job everyone :clap:');
+      message.push('Until next week!');
+    } else {
+      message.push('Well, this is awkward. No one submitted anything this week :thumbsdown:');
+    }
+
+    return message.join('\n');
   },
 };
