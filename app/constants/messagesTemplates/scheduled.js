@@ -6,6 +6,7 @@ module.exports = {
 
   SUBMISSION_CLOSING_REMINDER: () => 'Submissions will be closing in an hour. Hurry!',
   PUZZLE_SUBMISSION_CLOSED: async (data) => {
+    // TODO: move away from using async in message templates
     const { channelId, puzzleId } = data;
     let message = '';
     message += 'Submissions closed!';

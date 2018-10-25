@@ -5,12 +5,14 @@ const puzzleCommandHandler = require('./puzzle');
 const settingsCommandHandler = require('./settings');
 const leaderboardCommandHandler = require('./leaderboard');
 const helpCommandHandler = require('./help');
+const statusCommandHandler = require('./status');
 
 const commandHandlers = {
   puzzle: puzzleCommandHandler,
   settings: settingsCommandHandler,
   leaderboard: leaderboardCommandHandler,
   help: helpCommandHandler,
+  status: statusCommandHandler
 };
 
 module.exports = (controller) => {

@@ -1,6 +1,14 @@
 const moment = require('moment');
 const _ = require('lodash');
 
+const getNextStartDay = (channel) => {
+  const startDate = moment().utcOffset(channel.timezone).add(1, 'days');
+
+  return ['Saturday', 'Sunday'].includes(startDate.format('dddd'))
+    ? 'monday' : startDate.format('dddd').toLowerCase();
+};
+
+
 module.exports = {
   JOINED_CHANNEL: () => [
     'Hi!',
@@ -53,12 +61,62 @@ module.exports = {
   },
   SETTINGS_UPDATED: () => 'Your settings for this channel has been updated!',
   CHANNEL_REACTIVATED: (channel) => {
-    const startDate = moment().utcOffset(channel.timezone).add(1, 'days');
-
-    const startDay = ['Saturday', 'Sunday'].includes(startDate.format('dddd'))
-      ? 'monday' : startDate.format('dddd').toLowerCase();
-
+    const startDay = getNextStartDay(channel);
     return `Puzlr has been reactivated. Your next puzzle will start on *${_.startCase(startDay)}* at *${channel.schedule[startDay].start}*`;
   },
   CHANNEL_DEACTIVATED: () => 'Puzlr has been deactivated. You will no longer receive programming puzzles.',
+  CURRENT_STATUS: (channel, status) => {
+    if (!channel.isActive) {
+      return 'Puzlr is not active! Please set bot status to *Online* in settings.';
+    }
+    const todayDay = moment().utcOffset(channel.timezone).format('dddd').toLowerCase()
+
+    if (!status.isSubmissionWindowOpen) {
+      if(channel.schedule[todayDay]){
+
+      }
+      const startDay = getNextStartDay();
+      return ['Submission window not yet open. ',
+        `Your next puzzle will start on *${
+          _.startCase(startDay)}* at *${channel.schedule[startDay].start}*`,
+      ].join('\n');
+    }
+
+    const todayDay = moment().utcOffset(channel.timezone).format('dddd');
+    return ``
+  },
+  UPCOMING_SCHEDULED_SUBMISSION_FOR_TODAY: (channel) => {
+    const todayDay = moment().utcOffset(channel.timezone).format('dddd').toLowerCase()
+    return  `Submission will open at *${channel.schedule[todayDay].start}*`
+  },
+  CHANNEL_INACTIVE: () => {
+    return 'Puzlr is not active! Please set bot status to *Online* in settings.';
+  },
+  NEXT_SUBMISSION_SCHEDULED_FOR_FUTURE_DATE: (channel) => {
+    const startDay = getNextStartDay();
+    return ['Submission window not yet open. ',
+      `Your next puzzle will start on *${
+        _.startCase(startDay)}* at *${channel.schedule[startDay].start}*`,
+    ].join('\n');
+  },
+  SUBMISSION_WINDOW_OPEN_WITH_SUBMISSIONS: (channel, submissions) => {
+    const message = [];
+    const todayDay = moment().utcOffset(channel.timezone).format('dddd').toLowerCase()
+
+    message.push('Here is what we have so far:')
+    message.push('')
+    submissions
+      .forEach(
+        (s, index) => {
+          message.push(`${index + 1}. *${s.user.userName}*: Score *${s.score}*, Time Taken *${
+          moment.utc(s.duration * 1000).format('mm:ss')}*`)
+        })
+    message.push('')
+    message.push(`Submissions are open till *${channel.schedule[todayDay].start}*`)
+    return message.join('\n')
+  },
+  SUBMISSION_WINDOW_OPEN_NO_SUBMISSIONS: (channel) => {
+    const todayDay = moment().utcOffset(channel.timezone).format('dddd').toLowerCase()
+    return `Submissions are open till *${channel.schedule[todayDay].start}*`
+  }
 };

@@ -13,6 +13,7 @@ const cleanBotkitDataToModel = botkitData => ({
   workspace: botkitData.team,
 });
 
+
 module.exports = {
   get: async (id, callback) => {
     const channel = await ChannelModel.findById(id);
@@ -47,12 +48,16 @@ module.exports = {
   addFreshQuizForToday: async (channelId) => {
     const channel = await ChannelModel.findById(channelId);
     const freshPuzzle = await getFreshPuzzle(channelId);
+
     await channel.addPuzzle(freshPuzzle, {
-      through: { dateScheduled: moment().format('YYYY-MM-DD') },
+      through: {
+        dateScheduled: moment().utcOffset(channel.timezone).format('YYYY-MM-DD'),
+      },
     });
     return freshPuzzle;
   },
   getAssignedPuzzleForToday: async (channelId) => {
+    // TODO: fix where to make the date utcoffset
     const channels = await ChannelModel.findAll({
       where: {
         id: channelId,
@@ -68,5 +73,4 @@ module.exports = {
     const puzzle = _.get(channels, '0.puzzles.0', null);
     return puzzle;
   },
-
 };
