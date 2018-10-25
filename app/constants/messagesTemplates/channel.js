@@ -13,6 +13,7 @@ module.exports = {
     '- once submission window is open, type `@puzlr start` to start on puzzle',
     '- type `@puzlr leaderboard` to see results for the week',
     '- type `@puzlr help` to see list of commands',
+    '- to stop `@puzlr` from sending puzzles, set status to *Offline* in settings',
     '',
     '',
     'Some other useful information:',

@@ -26,6 +26,6 @@ module.exports = (controller) => {
   });
 
   controller.on('slash_command', (bot, e) => {
-
+    console.log('hello world');
   });
 };
