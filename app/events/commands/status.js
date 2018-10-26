@@ -55,6 +55,6 @@ module.exports = {
       );
     }
 
-    bot.reply(event, message);
+    bot.replyPublic(event, message);
   },
 };

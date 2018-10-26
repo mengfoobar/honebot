@@ -10,12 +10,14 @@ const { isSubmissionWindowOpen } = require('../../../utils');
 
 
 module.exports = {
-  start: async (bot, event, configs = null) => {
+  default: async (bot, event, configs = null) => {
     const { channel, user, team } = event;
     const channelInstance = await ChannelStore.get(channel);
     if (!isSubmissionWindowOpen(channelInstance)) {
       // TODO: add more sophisticated response (before, after...etc)
-      bot.reply(event, MessageTemplates.scheduled.SUBMISSION_WINDOW_NOT_OPEN(channelInstance));
+      bot.replyPublic(event,
+        MessageTemplates.scheduled.SUBMISSION_WINDOW_NOT_OPEN(channelInstance)
+      );
       return;
     }
 
@@ -45,7 +47,7 @@ module.exports = {
           );
 
           if (hasUserSubmittedForPuzzle) {
-            bot.say({ text: MessageTemplates.puzzle.ALREADY_SUBMITTED(), channel: user });
+            bot.replyPublic({ text: MessageTemplates.puzzle.ALREADY_SUBMITTED(), channel: user });
           } else {
             assignedPuzzle.messages.map((m) => {
               MessageHandler[m.type]({

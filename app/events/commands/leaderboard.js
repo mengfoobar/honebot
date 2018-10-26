@@ -12,6 +12,6 @@ module.exports = {
       THIS_WEEK,
     );
 
-    bot.reply(event, MessagesTemplates.channel.LEADERBOARD_RESULTS(results));
+    bot.replyPublic(event, MessagesTemplates.channel.LEADERBOARD_RESULTS(results));
   },
 };

@@ -1,14 +1,14 @@
 const { get } = require('lodash');
 const { misc } = require('../../constants/messagesTemplates');
 const { parseMentionText } = require('../../utils/messageParser');
-const puzzleCommandHandler = require('./puzzle');
+const startCommandHandler = require('./start');
 const settingsCommandHandler = require('./settings');
 const leaderboardCommandHandler = require('./leaderboard');
 const helpCommandHandler = require('./help');
 const statusCommandHandler = require('./status');
 
 const commandHandlers = {
-  puzzle: puzzleCommandHandler,
+  start: startCommandHandler,
   settings: settingsCommandHandler,
   leaderboard: leaderboardCommandHandler,
   help: helpCommandHandler,
@@ -16,16 +16,6 @@ const commandHandlers = {
 };
 
 module.exports = (controller) => {
-  controller.on('direct_mention', (bot, e) => {
-    const { command, value, configs } = parseMentionText(e.text);
-    const handler = get(commandHandlers, `${command}.${value ? `${value}` : 'default'}`);
-
-    if (handler) {
-      handler && handler(bot, e, configs);
-    } else {
-      bot.reply(e, misc.UNKNOWN_COMMAND());
-    }
-  });
 
   controller.on('slash_command', (bot, e) => {
 
@@ -35,7 +25,7 @@ module.exports = (controller) => {
     if (handler) {
       handler && handler(bot, e, configs);
     } else {
-      bot.reply(e, misc.UNKNOWN_COMMAND());
+      bot.replyPublic(e, misc.UNKNOWN_COMMAND());
     }
   });
 };

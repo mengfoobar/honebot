@@ -6,7 +6,9 @@ module.exports = (controller) => {
   controller.on('dialog_submission', (bot, e) => {
     const key = parseDynamicId(e.callback_id);
     // TODO: add handling for unknown dialogs
-    handleDialogCallback[key](bot, e);
+    if (handleDialogCallback[key]) {
+      handleDialogCallback[key](bot, e);
+    }
   });
 };
 
@@ -26,7 +28,7 @@ const handleDialogCallback = {
     } else if (!updatedChannel.isActive && channel.isActive) {
       messages.push(MessageTemplates.channel.CHANNEL_DEACTIVATED());
     }
-    bot.reply(e, messages.join('\n'));
+    bot.replyPublic(e, messages.join('\n'));
     bot.dialogOk();
   },
 };
