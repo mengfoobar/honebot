@@ -12,7 +12,7 @@ const commandHandlers = {
   settings: settingsCommandHandler,
   leaderboard: leaderboardCommandHandler,
   help: helpCommandHandler,
-  status: statusCommandHandler
+  status: statusCommandHandler,
 };
 
 module.exports = (controller) => {
@@ -28,6 +28,14 @@ module.exports = (controller) => {
   });
 
   controller.on('slash_command', (bot, e) => {
-    console.log('hello world');
+
+    const { command, value, configs } = parseMentionText(e.text);
+    const handler = get(commandHandlers, `${command}.${value ? `${value}` : 'default'}`);
+
+    if (handler) {
+      handler && handler(bot, e, configs);
+    } else {
+      bot.reply(e, misc.UNKNOWN_COMMAND());
+    }
   });
 };

@@ -17,11 +17,11 @@ module.exports = {
     '',
     'Here are a few things you need know about me :wink:',
     '',
-    '- please *configure your workspace timezone, desired schedule* using `@puzlr settings`',
-    '- once submission window is open, type `@puzlr start` to start on puzzle',
-    '- type `@puzlr leaderboard` to see results for the week',
-    '- type `@puzlr help` to see list of commands',
-    '- to stop `@puzlr` from sending puzzles, set status to *Offline* in settings',
+    '- please *configure your workspace timezone, desired schedule* using `/puzlr settings`',
+    '- once submission window is open, type `/puzlr start` to start on puzzle',
+    '- type `/puzlr leaderboard` to see results for the week',
+    '- type `/puzlr help` to see list of commands',
+    '- to stop `/puzlr` from sending puzzles, set status to *Offline* in settings',
     '',
     '',
     'Some other useful information:',
@@ -29,7 +29,7 @@ module.exports = {
     '- updates to settings can take up to a day to be in effect',
   ].join('\n'),
   LEADERBOARD_RESULTS: (submissions) => {
-    let leaderboardMessage = [];
+    const leaderboardMessage = [];
 
     leaderboardMessage.push('Here are the results so far for this week!');
     leaderboardMessage.push('');
@@ -46,7 +46,7 @@ module.exports = {
         );
       // TODO: mention top 3 scorers if > 3, else mention top 1
     } else {
-      leaderboardMessage = 'No submissions yet!';
+      leaderboardMessage.push('No submissions yet!');
     }
     return leaderboardMessage.join('\n');
   },
@@ -69,10 +69,10 @@ module.exports = {
     if (!channel.isActive) {
       return 'Puzlr is not active! Please set bot status to *Online* in settings.';
     }
-    const todayDay = moment().utcOffset(channel.timezone).format('dddd').toLowerCase()
+    const todayDay = moment().utcOffset(channel.timezone).format('dddd').toLowerCase();
 
     if (!status.isSubmissionWindowOpen) {
-      if(channel.schedule[todayDay]){
+      if (channel.schedule[todayDay]) {
 
       }
       const startDay = getNextStartDay();
@@ -82,16 +82,13 @@ module.exports = {
       ].join('\n');
     }
 
-    const todayDay = moment().utcOffset(channel.timezone).format('dddd');
-    return ``
+    return '';
   },
   UPCOMING_SCHEDULED_SUBMISSION_FOR_TODAY: (channel) => {
-    const todayDay = moment().utcOffset(channel.timezone).format('dddd').toLowerCase()
-    return  `Submission will open at *${channel.schedule[todayDay].start}*`
+    const todayDay = moment().utcOffset(channel.timezone).format('dddd').toLowerCase();
+    return `Submission will open at *${channel.schedule[todayDay].start}*`;
   },
-  CHANNEL_INACTIVE: () => {
-    return 'Puzlr is not active! Please set bot status to *Online* in settings.';
-  },
+  CHANNEL_INACTIVE: () => 'Puzlr is not active! Please set bot status to *Online* in settings.',
   NEXT_SUBMISSION_SCHEDULED_FOR_FUTURE_DATE: (channel) => {
     const startDay = getNextStartDay();
     return ['Submission window not yet open. ',
@@ -101,22 +98,23 @@ module.exports = {
   },
   SUBMISSION_WINDOW_OPEN_WITH_SUBMISSIONS: (channel, submissions) => {
     const message = [];
-    const todayDay = moment().utcOffset(channel.timezone).format('dddd').toLowerCase()
+    const todayDay = moment().utcOffset(channel.timezone).format('dddd').toLowerCase();
 
-    message.push('Here is what we have so far:')
-    message.push('')
+    message.push('Here is what we have so far:');
+    message.push('');
     submissions
       .forEach(
         (s, index) => {
           message.push(`${index + 1}. *${s.user.userName}*: Score *${s.score}*, Time Taken *${
-          moment.utc(s.duration * 1000).format('mm:ss')}*`)
-        })
-    message.push('')
-    message.push(`Submissions are open till *${channel.schedule[todayDay].start}*`)
-    return message.join('\n')
+            moment.utc(s.duration * 1000).format('mm:ss')}*`);
+        },
+      );
+    message.push('');
+    message.push(`Submissions are open till *${channel.schedule[todayDay].start}*`);
+    return message.join('\n');
   },
   SUBMISSION_WINDOW_OPEN_NO_SUBMISSIONS: (channel) => {
-    const todayDay = moment().utcOffset(channel.timezone).format('dddd').toLowerCase()
-    return `Submissions are open till *${channel.schedule[todayDay].start}*`
-  }
+    const todayDay = moment().utcOffset(channel.timezone).format('dddd').toLowerCase();
+    return `Submissions are open till *${channel.schedule[todayDay].start}*`;
+  },
 };
