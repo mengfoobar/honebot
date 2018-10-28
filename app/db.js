@@ -16,7 +16,7 @@ const sequelize = new Sequelize({
   port: configs.port,
   username: configs.user,
   password: configs.password,
-  database: 'puzlr',
+  database: 'hone',
   pool: {
     max: configs.connection_limit,
   },

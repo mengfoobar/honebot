@@ -8,4 +8,4 @@ package-lock.json
 yarn.lock
 logs
 .data
-=
+.env_backup

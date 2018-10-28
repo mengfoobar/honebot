@@ -4,7 +4,10 @@ const moment = require('moment');
 const axios = require('axios');
 const _ = require('lodash');
 
-const mongoConnectionString = 'mongodb://127.0.0.1/agenda';
+const mongoConnectionString = `mongodb://${
+  process.env.mongo_user}:${
+  encodeURIComponent(process.env.mongo_password)}@${
+  process.env.mongo_host}/${process.env.mongo_db}`;
 
 const ChannelStore = require('../store/channel');
 const WorkspaceStore = require('../store/workspace');
