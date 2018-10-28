@@ -36,6 +36,8 @@ webserver.get('/', function(req, res){
     layout: 'layouts/default'
   });
 })
+
+webserver.get('/hello', (req, res) => res.send('Hello World!'))
 // Set up a simple storage backend for keeping a record of customers
 // who sign up for the app via the oauth
 require(__dirname + '/components/user_registration.js')(controller);
