@@ -24,15 +24,7 @@ const Channel = connection.define('channel', {
         start: '8:00 am',
         end: '4:00 pm',
       },
-      tuesday: {
-        start: '8:00 am',
-        end: '4:00 pm',
-      },
       wednesday: {
-        start: '8:00 am',
-        end: '4:00 pm',
-      },
-      thursday: {
         start: '8:00 am',
         end: '4:00 pm',
       },
