@@ -2,10 +2,18 @@ const moment = require('moment');
 const _ = require('lodash');
 
 const getNextStartDay = (channel) => {
-  const startDate = moment().utcOffset(channel.timezone).add(1, 'days');
+  const { schedule } = channel;
 
-  return ['Saturday', 'Sunday'].includes(startDate.format('dddd'))
-    ? 'monday' : startDate.format('dddd').toLowerCase();
+  for (let i = 1; i < 8; i += 1) {
+    const nextDay = moment()
+      .utcOffset(channel.timezone)
+      .add(i, 'days').format('dddd')
+      .toLowerCase();
+    if (schedule[nextDay]) {
+      return nextDay;
+    }
+  }
+  return moment().utcOffset(channel.timezone).format('dddd').toLowerCase();
 };
 
 
@@ -89,7 +97,7 @@ module.exports = {
   },
   CHANNEL_INACTIVE: () => 'Hone bot is not active! Please set bot status to *Online* in settings.',
   NEXT_SUBMISSION_SCHEDULED_FOR_FUTURE_DATE: (channel) => {
-    const startDay = getNextStartDay();
+    const startDay = getNextStartDay(channel);
     return ['Submission window not yet open. ',
       `Your next puzzle will start on *${
         _.startCase(startDay)}* at *${channel.schedule[startDay].start}*`,
@@ -99,7 +107,7 @@ module.exports = {
     const message = [];
     const todayDay = moment().utcOffset(channel.timezone).format('dddd').toLowerCase();
 
-    message.push('Here is what we have so far:');
+    message.push("Here is what we have for today's puzzle so far:");
     message.push('');
     submissions
       .forEach(
@@ -109,14 +117,12 @@ module.exports = {
         },
       );
     message.push('');
-    message.push(`Submissions are open till *${channel.schedule[todayDay].start}*`);
+    message.push(`Submissions are open till *${channel.schedule[todayDay].end}*`);
     return message.join('\n');
   },
   SUBMISSION_WINDOW_OPEN_NO_SUBMISSIONS: (channel) => {
     const todayDay = moment().utcOffset(channel.timezone).format('dddd').toLowerCase();
     return `Submissions are open till *${channel.schedule[todayDay].start}*`;
   },
-  SUBMISSION_READY: () => {
-    return 'You can now start on the puzzle in the chat with me: *Hone Bot*!'
-  }
+  SUBMISSION_READY: () => 'You can now start on the puzzle in the chat with me: *Hone Bot*!',
 };
