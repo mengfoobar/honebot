@@ -21,7 +21,7 @@ module.exports = {
     '- once submission window is open, type `/hone start` to start on puzzle',
     '- type `/hone leaderboard` to see results for the week',
     '- type `/hone help` to see list of commands',
-    '- to stop `/hone` from sending puzzles, set status to *Offline* in settings',
+    '- to stop *hone* bot from sending puzzles, set status to *Offline* in settings',
     '',
     '',
     'Some other useful information:',
@@ -31,10 +31,9 @@ module.exports = {
   LEADERBOARD_RESULTS: (submissions) => {
     const leaderboardMessage = [];
 
-    leaderboardMessage.push('Here are the results so far for this week!');
-    leaderboardMessage.push('');
-
     if (submissions && submissions.length > 0) {
+      leaderboardMessage.push('Here are the results so far for this week!');
+      leaderboardMessage.push('');
       submissions
         .forEach(
           (r, index) => {
@@ -117,4 +116,7 @@ module.exports = {
     const todayDay = moment().utcOffset(channel.timezone).format('dddd').toLowerCase();
     return `Submissions are open till *${channel.schedule[todayDay].start}*`;
   },
+  SUBMISSION_READY: () => {
+    return 'You can now start on the puzzle in the chat with me: *Hone Bot*!'
+  }
 };

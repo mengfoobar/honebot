@@ -40,10 +40,6 @@ const Channel = connection.define('channel', {
         start: '8:00 am',
         end: '4:00 pm',
       },
-      saturday: {
-        start: '8:00 am',
-        end: '4:00 pm',
-      },
     },
     // TODO: add shape validator
   },

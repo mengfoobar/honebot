@@ -64,9 +64,10 @@ agenda.define('schedule_daily_reminders', async (job, done) => {
           c,
         );
 
+        // TODO: change to an hour
         scheduleNewMessage(
           SUBMISSION_CLOSING_REMINDER.name,
-          moment(`${dateStr} ${c.schedule[day].end}`, 'YYYY-MM-DD hh:mm A').subtract(2, 'minutes').utcOffset(c.timezone, true),
+          moment(`${dateStr} ${c.schedule[day].end}`, 'YYYY-MM-DD hh:mm A').subtract(5, 'minutes').utcOffset(c.timezone, true),
           c,
         );
 
@@ -86,7 +87,7 @@ agenda.define('schedule_daily_reminders', async (job, done) => {
 });
 
 agenda.define('schedule_weekly_summary', async (job, done) => {
-  const dateEndOfWeek = moment().endOf('week').format('YYYY-MM-DD');
+  const dateEndOfWeek = moment().endOf('week').subtract(1, 'days').format('YYYY-MM-DD');
 
   const channels = await ChannelStore.all();
   const channelsWithActiveSchedule = channels.filter(c => c.isActive);
@@ -173,6 +174,7 @@ const isChannelScheduledForToday = (channel) => {
 };
 
 (async function () {
+  // TODO: change to 5 minutes
   await agenda.start();
   await agenda.cancel({ name: 'schedule_daily_reminders' });
   await agenda.cancel({ name: 'schedule_weekly_summary' });

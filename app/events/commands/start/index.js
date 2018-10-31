@@ -15,11 +15,12 @@ module.exports = {
     const channelInstance = await ChannelStore.get(channel);
     if (!isSubmissionWindowOpen(channelInstance)) {
       // TODO: add more sophisticated response (before, after...etc)
-      bot.replyPublic(event,
-        MessageTemplates.scheduled.SUBMISSION_WINDOW_NOT_OPEN(channelInstance)
-      );
+      bot.replyPrivate(event,
+        MessageTemplates.scheduled.SUBMISSION_WINDOW_NOT_OPEN(channelInstance));
       return;
     }
+
+    bot.replyPrivate(event, MessageTemplates.channel.SUBMISSION_READY);
 
     bot.startPrivateConversation(event, async (err, convo) => {
       convo.addQuestion(

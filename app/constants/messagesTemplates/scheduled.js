@@ -5,12 +5,12 @@ const { THIS_WEEK } = require('../../constants/leaderboardAggregateType');
 module.exports = {
   PUZZLE_SUBMISSION_OPEN: () => 'Puzzle submissions are now open :raised_hands: \nRun the command `/hone start` to start.',
 
-  SUBMISSION_CLOSING_REMINDER: () => 'Submissions will be closing soon. Hurry!',
+  SUBMISSION_CLOSING_REMINDER: () => 'Submissions will be closing in an hour. Hurry!',
   PUZZLE_SUBMISSION_CLOSED: async (data) => {
     // TODO: move away from using async in message templates
     const { channelId, puzzleId } = data;
     let message = '';
-    message += 'Submissions closed!';
+    message += 'Submissions closed!\n';
     const submissions = await SubmissionStore.getSubmissionsForPuzzle(
       channelId,
       puzzleId,
