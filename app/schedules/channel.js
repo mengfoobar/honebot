@@ -13,8 +13,8 @@ const mongoDetails = {
 
 const mongoConnectionString = `mongodb://${
   mongoDetails.user && mongoDetails.password
-    ? `${mongoDetails.user}:${mongoDetails.password}@` : ''}${
-  process.env.mongo_host}/${process.env.mongo_db}`;
+    ? `${mongoDetails.user}:${encodeURIComponent(mongoDetails.password)}@` : ''}${
+  mongoDetails.host}/${mongoDetails.db}`;
 
 const ChannelStore = require('../store/channel');
 const WorkspaceStore = require('../store/workspace');
