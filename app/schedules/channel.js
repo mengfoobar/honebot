@@ -4,6 +4,12 @@ const moment = require('moment');
 const axios = require('axios');
 const _ = require('lodash');
 
+const scheduleConfigs = {
+  scheduleDailyRemindersJob: process.env.schedule_daily_reminders_job,
+  scheduleWeeklySummaryJob: process.env.schedule_weekly_summary_job,
+  scheduleClosingReminderTMinusMins: process.env.schedule_closing_reminder_t_minus_mins,
+};
+
 const mongoDetails = {
   user: process.env.mongo_user,
   password: process.env.mongo_password,
@@ -67,7 +73,11 @@ agenda.define('schedule_daily_reminders', async (job, done) => {
         // TODO: change to an hour
         scheduleNewMessage(
           SUBMISSION_CLOSING_REMINDER.name,
-          moment(`${dateStr} ${c.schedule[day].end}`, 'YYYY-MM-DD hh:mm A').subtract(5, 'minutes').utcOffset(c.timezone, true),
+          moment(`${dateStr} ${c.schedule[day].end}`,
+            'YYYY-MM-DD hh:mm A').subtract(
+            scheduleConfigs.scheduleClosingReminderTMinusMins,
+            'minutes',
+          ).utcOffset(c.timezone, true),
           c,
         );
 
@@ -176,8 +186,10 @@ const isChannelScheduledForToday = (channel) => {
 (async function () {
   // TODO: change to 5 minutes
   await agenda.start();
+  // clear prior jobs
   await agenda.cancel({ name: 'schedule_daily_reminders' });
   await agenda.cancel({ name: 'schedule_weekly_summary' });
-  await agenda.every('60 seconds', 'schedule_daily_reminders');
-  await agenda.every('60 seconds', 'schedule_weekly_summary');
+
+  await agenda.every(scheduleConfigs.scheduleDailyRemindersJob, 'schedule_daily_reminders');
+  await agenda.every(scheduleConfigs.scheduleWeeklySummaryJob, 'schedule_weekly_summary');
 }());

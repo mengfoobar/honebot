@@ -88,15 +88,15 @@ const handleTimerSecondsUpdated = (timer, bot, convo, puzzle) => {
   timer.addEventListener('secondsUpdated', async () => {
     const { minutes, seconds } = timer.getTimeValues();
 
-    if (minutes === 4 && seconds === 0) {
+    if (minutes === 9 && seconds === 0) {
       bot.say({ text: Messages.ONE_MINUTE_LEFT(), channel: user });
     }
 
-    if (minutes === 4 && seconds === 30) {
+    if (minutes === 9 && seconds === 30) {
       bot.say({ text: Messages.THIRTY_SECONDS_LEFT(), channel: user });
     }
 
-    if (minutes === 5 && seconds === 0) {
+    if (minutes === 10 && seconds === 0) {
       timer.stop();
       timer.removeEventListener('secondsUpdated', () => {});
       convo.stop();
