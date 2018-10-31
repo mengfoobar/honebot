@@ -6,7 +6,7 @@ module.exports = async (bot, event) => {
   const channel = await ChannelStore.get(event.channel);
 
   const dialog = bot
-    .createDialog('Puzlr Settings', generateDynamicId('settings'), 'Submit')
+    .createDialog('Hone Bot Settings', generateDynamicId('settings'), 'Submit')
     .addSelect(
       'Bot Status',
       'isActive',

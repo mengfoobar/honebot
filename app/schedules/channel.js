@@ -4,9 +4,16 @@ const moment = require('moment');
 const axios = require('axios');
 const _ = require('lodash');
 
+const mongoDetails = {
+  user: process.env.mongo_user,
+  password: process.env.mongo_password,
+  db: process.env.mongo_db,
+  host: process.env.mongo_host,
+};
+
 const mongoConnectionString = `mongodb://${
-  process.env.mongo_user}:${
-  encodeURIComponent(process.env.mongo_password)}@${
+  mongoDetails.user && mongoDetails.password
+    ? `${mongoDetails.user}:${mongoDetails.password}@` : ''}${
   process.env.mongo_host}/${process.env.mongo_db}`;
 
 const ChannelStore = require('../store/channel');

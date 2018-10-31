@@ -3,9 +3,9 @@ const SubmissionStore = require('../../store/submission');
 const { THIS_WEEK } = require('../../constants/leaderboardAggregateType');
 
 module.exports = {
-  PUZZLE_SUBMISSION_OPEN: () => 'Puzzle submissions are now open :raised_hands: \nRun the command `/puzlr start` to start.',
+  PUZZLE_SUBMISSION_OPEN: () => 'Puzzle submissions are now open :raised_hands: \nRun the command `/hone start` to start.',
 
-  SUBMISSION_CLOSING_REMINDER: () => 'Submissions will be closing in an hour. Hurry!',
+  SUBMISSION_CLOSING_REMINDER: () => 'Submissions will be closing soon. Hurry!',
   PUZZLE_SUBMISSION_CLOSED: async (data) => {
     // TODO: move away from using async in message templates
     const { channelId, puzzleId } = data;
@@ -23,7 +23,7 @@ module.exports = {
       .join('\n');
 
     if (submissions) {
-      message += `Here are the results for this today's puzzle: \n\n${submissionsStr}`;
+      message += `Here are the results for today's puzzle: \n\n${submissionsStr}`;
     } else {
       message += '\n\nNo submissions today boohoo :( ';
     }

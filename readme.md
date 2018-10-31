@@ -1,4 +1,4 @@
-# Puzlr
+# Hone Bot
 
 A social bot that improves team chemistry/engagement through fun/competitive puzzles
 
@@ -6,7 +6,7 @@ A social bot that improves team chemistry/engagement through fun/competitive puz
 0. install nodejs LTS [https://nodejs.org/en/](https://nodejs.org/en/)
 0. install dependencies `npm install`
 0. make copy of `.sample.env` in root project folder to `.env`. Update configs based on your own local settings.
-0. create mysql scheme `puzlr`. Command `CREATE SCHEMA `puzlr` DEFAULT CHARACTER SET utf8 ;
+0. create mysql scheme `hone`. Command `CREATE SCHEMA `hone` DEFAULT CHARACTER SET utf8 ;
 ` 
 0. run the app `node .`. You should be able to see in locally: `localhost:3000`
 0. use **ngrok** to expose localhost to public so slack can access it. 

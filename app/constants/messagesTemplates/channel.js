@@ -17,11 +17,11 @@ module.exports = {
     '',
     'Here are a few things you need know about me :wink:',
     '',
-    '- please *configure your workspace timezone, desired schedule* using `/puzlr settings`',
-    '- once submission window is open, type `/puzlr start` to start on puzzle',
-    '- type `/puzlr leaderboard` to see results for the week',
-    '- type `/puzlr help` to see list of commands',
-    '- to stop `/puzlr` from sending puzzles, set status to *Offline* in settings',
+    '- please *configure your workspace timezone, desired schedule* using `/hone settings`',
+    '- once submission window is open, type `/hone start` to start on puzzle',
+    '- type `/hone leaderboard` to see results for the week',
+    '- type `/hone help` to see list of commands',
+    '- to stop `/hone` from sending puzzles, set status to *Offline* in settings',
     '',
     '',
     'Some other useful information:',
@@ -62,12 +62,12 @@ module.exports = {
   SETTINGS_UPDATED: () => 'Your settings for this channel has been updated!',
   CHANNEL_REACTIVATED: (channel) => {
     const startDay = getNextStartDay(channel);
-    return `Puzlr has been reactivated. Your next puzzle will start on *${_.startCase(startDay)}* at *${channel.schedule[startDay].start}*`;
+    return `Hone bot has been reactivated. Your next puzzle will start on *${_.startCase(startDay)}* at *${channel.schedule[startDay].start}*`;
   },
-  CHANNEL_DEACTIVATED: () => 'Puzlr has been deactivated. You will no longer receive programming puzzles.',
+  CHANNEL_DEACTIVATED: () => 'Hone bot has been deactivated. You will no longer receive programming puzzles.',
   CURRENT_STATUS: (channel, status) => {
     if (!channel.isActive) {
-      return 'Puzlr is not active! Please set bot status to *Online* in settings.';
+      return 'Hone bot is not active! Please set bot status to *Online* in settings.';
     }
     const todayDay = moment().utcOffset(channel.timezone).format('dddd').toLowerCase();
 
@@ -88,7 +88,7 @@ module.exports = {
     const todayDay = moment().utcOffset(channel.timezone).format('dddd').toLowerCase();
     return `Submission will open at *${channel.schedule[todayDay].start}*`;
   },
-  CHANNEL_INACTIVE: () => 'Puzlr is not active! Please set bot status to *Online* in settings.',
+  CHANNEL_INACTIVE: () => 'Hone bot is not active! Please set bot status to *Online* in settings.',
   NEXT_SUBMISSION_SCHEDULED_FOR_FUTURE_DATE: (channel) => {
     const startDay = getNextStartDay();
     return ['Submission window not yet open. ',

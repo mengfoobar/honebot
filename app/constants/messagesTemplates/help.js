@@ -2,10 +2,10 @@ module.exports = {
   SHOW: () => [
     'Here are the commands available:',
     '',
-    ' - `/puzlr settings` to edit bot settings for channel',
-    ' - `/puzlr start` to start on the puzzle of the day',
-    ' - `/puzlr leaderboard` to show results and who is currently kicking butt',
-    ' - `/puzlr status` to show current status',
-    ' - To stop `puzlr` from sending puzzles, set status to *Offline* using `/puzlr settings`',
+    ' - `/hone settings` to edit bot settings for channel',
+    ' - `/hone start` to start on the puzzle of the day',
+    ' - `/hone leaderboard` to show results and who is currently kicking butt',
+    ' - `/hone status` to show current status',
+    ' - To stop `hone` bot from sending puzzles, set status to *Offline* using `/hone settings`',
   ].join('\n'),
 };

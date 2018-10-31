@@ -1,26 +1,19 @@
 const Sequelize = require('sequelize');
-const logger = require('./utils/logger')
+const logger = require('./utils/logger');
 
 const configs = {
+  dialect: 'mysql',
   host: process.env.mysql_host,
   port: process.env.mysql_port,
-  user: process.env.mysql_user,
-  password: process.env.mysql_password,
+  username: process.env.mysql_user || undefined,
+  password: process.env.mysql_password || undefined,
   database: process.env.mysql_database,
-  connection_limit: process.env.mysql_connection_limit,
+  pool: {
+    max: process.env.connection_limit || 10,
+  },
 };
 
-const sequelize = new Sequelize({
-  dialect: 'mysql',
-  host: configs.host,
-  port: configs.port,
-  username: configs.user,
-  password: configs.password,
-  database: 'hone',
-  pool: {
-    max: configs.connection_limit,
-  },
-});
+const sequelize = new Sequelize({ ...configs });
 
 sequelize
   .authenticate()
