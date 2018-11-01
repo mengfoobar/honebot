@@ -30,9 +30,10 @@ const ScheduledMessagesTemplates = require('../constants/messagesTemplates/sched
 const agenda = new Agenda({ db: { address: mongoConnectionString } });
 
 agenda.define('schedule_daily_reminders', async (job, done) => {
-  // TODO: purge existing update_jobs job
   // TODO: create separate function for each message type instead of all three at the same time
   // -> cleaner
+
+  console.log('looking to schedule schedule_daily_reminder jobs');
 
   // retrieves a list of channels that are valid for scheduling reminder for today
   const channels = await ChannelStore.all();
@@ -64,6 +65,7 @@ agenda.define('schedule_daily_reminders', async (job, done) => {
 
       const puzzle = await ChannelStore.addFreshQuizForToday(c.id);
       if (puzzle) {
+        console.log('new puzzle found');
         scheduleNewMessage(
           PUZZLE_SUBMISSION_OPEN.name,
           moment(`${dateStr} ${c.schedule[day].start}`, 'YYYY-MM-DD hh:mm A').utcOffset(c.timezone, true),
