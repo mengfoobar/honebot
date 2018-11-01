@@ -1,5 +1,6 @@
 const moment = require('moment');
 const _ = require('lodash');
+const timezones = require('../../constants/timezones');
 
 const getNextStartDay = (channel) => {
   const { schedule } = channel;
@@ -20,14 +21,17 @@ const getNextStartDay = (channel) => {
 module.exports = {
   JOINED_CHANNEL: () => [
     'Hi!',
-    'I schedule fun, 10 minutes programming puzzles for your team!',
-    'Engage in friendly competitions to see who is office champ :muscle:',
+    'I schedule fun bite-size computer science problems for your team!',
+    '',
+    'My goal is to nudge your team to get a refresher on existing CS fundamentals, '
+    + 'maybe learn a few new ones, and have some fun competing with '
+    + 'each other :muscle:',
+    '',
     '',
     'Here are a few things you need know about me :wink:',
     '',
-    '- please *configure your workspace timezone, desired schedule* using `/hone settings`',
-    '- once submission window is open, type `/hone start` to start on puzzle',
-    '- type `/hone leaderboard` to see results for the week',
+    '- please configure your *workspace timezone*, desired *schedule* using `/hone settings` :exclamation:',
+    '- once submission window is open, type `/hone start` to start on the problem for the day',
     '- type `/hone help` to see list of commands',
     '- to stop *hone* bot from sending puzzles, set status to *Offline* in settings',
     '',
@@ -35,7 +39,18 @@ module.exports = {
     'Some other useful information:',
     '- leaderboard is reset every week so there is always room for a new office champ :+1:',
     '- updates to settings can take up to a day to be in effect',
+    '',
+    '',
   ].join('\n'),
+  CURRENT_CHANNEL_SCHEDULE: (channel) => {
+    const daysScheduled = ['monday', 'tuesday', 'wednesday', ' thursday', 'friday'].filter(d => channel.schedule[d]).map(d => _.startCase(d));
+    const timezone = timezones.find(t => t.value === channel.timezone);
+    return [
+      `Problems scheduled for *${daysScheduled.join(', ')}.*`,
+      `Submission window opens from *${channel.schedule[daysScheduled[0].toLowerCase()].start} - ${channel.schedule[daysScheduled[0].toLowerCase()].end}*.`,
+      `Current timezone is set to ${timezone.label}`,
+    ].join('\n');
+  },
   LEADERBOARD_RESULTS: (submissions) => {
     const leaderboardMessage = [];
 
@@ -66,6 +81,7 @@ module.exports = {
     return `Your first puzzle will be available starting *${startDate.format('dddd')}* at *${
       channel.schedule[startDay].start}*`;
   },
+  INTRO_PUZZLE: () => "Let's try a practice problem to break the ice!\nType `/hone start` to get started.",
   SETTINGS_UPDATED: () => 'Your settings for this channel has been updated!',
   CHANNEL_REACTIVATED: (channel) => {
     const startDay = getNextStartDay(channel);

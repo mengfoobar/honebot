@@ -27,6 +27,11 @@ const Submission = connection.define('submission', {
   submittedAnswer: {
     type: Sequelize.DataTypes.STRING(256),
   },
+  countTowardsAggregate: {
+    type: Sequelize.DataTypes.BOOLEAN,
+    allowNull: false,
+    defaultValue: true,
+  },
 });
 
 Submission.belongsTo(Puzzle, { foreignKey: 'puzzleId' });

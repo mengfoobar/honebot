@@ -2,8 +2,8 @@ const Sequelize = require('sequelize');
 const _ = require('lodash');
 const connection = require('../db');
 const logger = require('../utils/logger');
-const puzzleDifficulties = require('../constants/puzzleDifficulty');
-const puzzleTypes = require('../constants/puzzleType');
+const PuzzleDifficulties = require('../constants/puzzleDifficulty');
+const PuzzleTypes = require('../constants/puzzleType');
 const { TEXT, IMAGE, MC_QUESTION } = require('../constants/messageTypes');
 
 const Puzzle = connection.define('puzzle', {
@@ -14,12 +14,12 @@ const Puzzle = connection.define('puzzle', {
   },
   difficulty: {
     type: Sequelize.DataTypes.ENUM,
-    values: Object.keys(puzzleDifficulties),
+    values: Object.keys(PuzzleDifficulties),
     allowNull: false,
   },
   type: {
     type: Sequelize.DataTypes.ENUM,
-    values: Object.keys(puzzleTypes),
+    values: Object.keys(PuzzleTypes),
     allowNull: false,
   },
   correctAnswer: {
@@ -42,11 +42,11 @@ Puzzle.sync().then(() => {
   // Table created
   logger.info('Succesfully synced channel to mysql');
   return Puzzle.findOrCreate({
-    where: { id: 'QUIZ_1' },
+    where: { id: 'INTRO_PUZZLE' },
     defaults: {
-      id: 'QUIZ_1',
+      id: 'INTRO_PUZZLE',
       difficulty: 'EASY',
-      type: 'MATH',
+      type: PuzzleTypes.INTRO,
       correctAnswer: '23',
       solution: 'Some solution',
       messages: [

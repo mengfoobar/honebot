@@ -66,6 +66,7 @@ module.exports = {
         createdAt: {
           [sequelize.Op.between]: timeDurationQuery,
         },
+        countTowardsAggregate: true,
         channelId,
       },
       include: [User],

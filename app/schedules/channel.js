@@ -36,8 +36,12 @@ agenda.define('schedule_daily_reminders', async (job, done) => {
   console.log('looking to schedule schedule_daily_reminder jobs');
 
   // retrieves a list of channels that are valid for scheduling reminder for today
+  // excludes the day that the channel is created
   const channels = await ChannelStore.all();
-  const channelsWithActiveSchedule = channels.filter(c => isChannelScheduledForToday(c));
+  const channelsWithActiveSchedule = channels.filter(c => (
+    isChannelScheduledForToday(c)
+    && moment(c.createdAt).diff(moment(), 'days') !== 0));
+
   const channelIdsWithActiveSchedule = {};
   channelsWithActiveSchedule.forEach((a) => {
     channelIdsWithActiveSchedule[a.id] = true;
@@ -102,7 +106,9 @@ agenda.define('schedule_weekly_summary', async (job, done) => {
   const dateEndOfWeek = moment().endOf('week').subtract(1, 'days').format('YYYY-MM-DD');
 
   const channels = await ChannelStore.all();
-  const channelsWithActiveSchedule = channels.filter(c => c.isActive);
+  // excludes inactive channels and the day that the channel is created
+  const channelsWithActiveSchedule = channels.filter(c => c.isActive
+    && moment(c.createdAt).diff(moment(), 'days') !== 0);
   const channelIdsWithActiveSchedule = {};
   channelsWithActiveSchedule.forEach((a) => {
     channelIdsWithActiveSchedule[a.id] = true;

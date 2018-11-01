@@ -1,3 +1,4 @@
 module.exports = {
-  MATH: 'MATH',
+  GENERAL: 'GENERAL',
+  INTRO: 'INTRO',
 };

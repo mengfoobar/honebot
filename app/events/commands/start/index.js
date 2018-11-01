@@ -7,13 +7,20 @@ const SubmissionStore = require('../../../store/submission');
 const MessageTemplates = require('../../../constants/messagesTemplates');
 const MessageHandler = require('./messageHandlers');
 const { isSubmissionWindowOpen } = require('../../../utils');
+const PuzzleType = require('../../../constants/puzzleType');
 
 
 module.exports = {
   default: async (bot, event, configs = null) => {
     const { channel, user, team } = event;
     const channelInstance = await ChannelStore.get(channel);
-    if (!isSubmissionWindowOpen(channelInstance)) {
+    const assignedPuzzle = await ChannelStore.getAssignedPuzzleForToday(channel);
+
+
+    if (
+      !isSubmissionWindowOpen(channelInstance)
+      && assignedPuzzle.type !== PuzzleType.INTRO
+    ) {
       // TODO: add more sophisticated response (before, after...etc)
       bot.replyPrivate(event,
         MessageTemplates.scheduled.SUBMISSION_WINDOW_NOT_OPEN(channelInstance));
@@ -36,7 +43,6 @@ module.exports = {
             });
           }
           // TODO: send some nice messages for new users
-          const assignedPuzzle = await ChannelStore.getAssignedPuzzleForToday(channel);
           if (!assignedPuzzle) {
             convo.addMessage({ text: MessageTemplates.puzzle.OUT_OF_PUZZLES() });
             convo.next();

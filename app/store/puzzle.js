@@ -14,6 +14,11 @@ module.exports = {
 
     return _.get(freshPuzzles, '0', null);
   },
+  getIntroPuzzle: async () => Puzzle.findOne({
+    where: {
+      type: 'INTRO',
+    },
+  }),
   get: async (id, callback) => {
 
   },

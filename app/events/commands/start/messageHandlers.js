@@ -4,6 +4,7 @@ const { sprintf } = require('sprintf-js');
 
 const Messages = require('../../../constants/messagesTemplates/puzzle');
 const Submission = require('../../../store/submission');
+const PuzzleType = require('../../../constants/puzzleType');
 const { computeSubmissionScore } = require('../../../utils/index');
 
 /* eslint-disable no-use-before-define */
@@ -49,6 +50,8 @@ module.exports = {
           // eslint-disable-next-line eqeqeq
           const isAnswerCorrect = submittedAnswer == puzzle.correctAnswer;
           const score = computeSubmissionScore(puzzle.difficulty, seconds, isAnswerCorrect);
+          const countTowardsAggregate = puzzle.type !== PuzzleType.INTRO;
+
           const [submission, created] = await Submission.save({
             duration: seconds,
             userId: user,
@@ -57,6 +60,7 @@ module.exports = {
             puzzleId: puzzle.id,
             score,
             channelId: originChannel,
+            countTowardsAggregate,
           });
 
           if (isAnswerCorrect) {
