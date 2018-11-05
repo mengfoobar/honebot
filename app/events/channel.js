@@ -33,6 +33,6 @@ module.exports = (controller) => {
         text: MessageTemplates.channel.INTRO_PUZZLE(),
       });
     },
-    8000);
+    5000);
   });
 };
