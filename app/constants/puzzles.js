@@ -3,6 +3,74 @@ const { IMAGE, MC_QUESTION, TEXT } = require('../constants/messageTypes');
 
 module.exports = [
   {
+    id: 'INTRO_PUZZLE',
+    difficulty: 'EASY',
+    type: PuzzleTypes.INTRO,
+    correctAnswer: 'E',
+    messages: [
+      {
+        type: IMAGE,
+        value: 'https://gph.is/19qxtuh',
+      },
+      {
+        type: TEXT,
+        value: [
+          'Assuming that x >= 0, and the code below is executed:',
+          '```y=0',
+          'Do while y <= x',
+          '    y = x*2',
+          'Loop```',
+          '',
+          'Which of the following statements are false?',
+          '',
+          'i: y may be equal to x+1',
+          'ii: y may be odd',
+          'iii: y may be equal to x',
+          'iv: y must be power of 2',
+        ].join('\n'),
+      },
+      {
+        type: MC_QUESTION,
+        value: 'Which of the above statements are false?',
+        choices: [
+
+          {
+            label: 'i',
+            value: 'A',
+          },
+          {
+            label: 'ii',
+            value: 'B',
+          },
+          {
+            label: 'iii',
+            value: 'C',
+          },
+          {
+            label: 'iv',
+            value: 'D',
+          },
+          {
+            label: 'ii & iv',
+            value: 'E',
+          },
+          {
+            label: 'iii & iv',
+            value: 'F',
+          },
+        ],
+      },
+    ],
+    solution: [
+      "Let's go through each option:",
+      '*y may be equal to x+1* -> true if x = 1',
+      "*y may be odd* -> can't true since it will always be 2*(an integer) ",
+      '*y may be equal to x* -> true if x = 0',
+      "*y must be power of 2* ->  false. A simple check with x=2, you'll get y=6. Not a power of 2",
+      'Based on the above findings, the correct answer is both ii & iv',
+    ],
+  },
+  {
     id: 'CQ8GDg4IAQA',
     difficulty: 'EASY',
     type: PuzzleTypes.GENERAL,
