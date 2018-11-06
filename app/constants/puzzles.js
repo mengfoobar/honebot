@@ -68,7 +68,7 @@ module.exports = [
       '*y may be equal to x* -> true if x = 0',
       "*y must be power of 2* ->  false. A simple check with x=2, you'll get y=6. Not a power of 2",
       'Based on the above findings, the correct answer is both ii & iv',
-    ],
+    ].join('\n'),
   },
   {
     id: 'CQ8GDg4IAQA',
