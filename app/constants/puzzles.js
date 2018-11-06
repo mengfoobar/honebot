@@ -6,7 +6,7 @@ module.exports = [
     id: 'INTRO_PUZZLE',
     difficulty: 'EASY',
     type: PuzzleTypes.INTRO,
-    correctAnswer: 'E',
+    correctAnswer: 'B',
     messages: [
       {
         type: IMAGE,
@@ -21,17 +21,17 @@ module.exports = [
           '    y = x*2',
           'Loop```',
           '',
+        ].join('\n'),
+      },
+      {
+        type: MC_QUESTION,
+        value: [
           'Which of the following statements are false?',
           '',
           'i: y may be equal to x+1',
           'ii: y may be odd',
           'iii: y may be equal to x',
-          'iv: y must be power of 2',
         ].join('\n'),
-      },
-      {
-        type: MC_QUESTION,
-        value: 'Which of the above statements are false?',
         choices: [
 
           {
@@ -47,16 +47,12 @@ module.exports = [
             value: 'C',
           },
           {
-            label: 'iv',
+            label: 'i && ii',
             value: 'D',
           },
           {
-            label: 'ii & iv',
+            label: 'ii & iii',
             value: 'E',
-          },
-          {
-            label: 'iii & iv',
-            value: 'F',
           },
         ],
       },
@@ -66,8 +62,7 @@ module.exports = [
       '*y may be equal to x+1* -> true if x = 1',
       "*y may be odd* -> can't true since it will always be 2*(an integer) ",
       '*y may be equal to x* -> true if x = 0',
-      "*y must be power of 2* ->  false. A simple check with x=2, you'll get y=6. Not a power of 2",
-      'Based on the above findings, the correct answer is both ii & iv',
+      'Based on the above findings, the correct answer is both ii',
     ].join('\n'),
   },
   {
