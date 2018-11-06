@@ -531,7 +531,7 @@ module.exports = [
       '    ->F(1)',
       '    ->F(1)',
       'Count all them up, we have 7 times!',
-    ],
+    ].join('\n'),
   },
   {
     id: 'CQYGCgMEDQ8',
@@ -648,7 +648,7 @@ module.exports = [
       ') -> pop: ["(", "("]',
       ') -> pop: ["("]',
       'while loop exits, and code will return *true*, which is the wrong answer!',
-    ],
+    ].join('\n'),
   },
   {
     id: 'BgQIDAQHAwg',
@@ -714,7 +714,7 @@ module.exports = [
       '( -> push: ["("]',
       ') -> pop: []',
       ') -> pop: throw underflow error because array is empty!',
-    ],
+    ].join('\n'),
   },
   {
     id: 'CQgHAwYNCA4',
@@ -784,7 +784,7 @@ module.exports = [
       '      -> 4',
       '        -> 2',
       'The only choice that matches the value f(2, 4) = 10 is B -> 2+2*4',
-    ],
+    ].join('\n'),
   },
   {
     id: 'DgACDgsHCwg',

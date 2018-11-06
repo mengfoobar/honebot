@@ -27,13 +27,16 @@ const WorkspaceStore = require('../store/workspace');
 const ScheduledMessageStore = require('../store/scheduledMessage');
 const ScheduledMessagesTemplates = require('../constants/messagesTemplates/scheduled');
 
-const agenda = new Agenda({ db: { address: mongoConnectionString } });
+const agenda = new Agenda({
+  db: { address: mongoConnectionString },
+  processEvery: '30 seconds',
+});
 
 agenda.define('schedule_daily_reminders', async (job, done) => {
   // TODO: create separate function for each message type instead of all three at the same time
   // -> cleaner
 
-  console.log('looking to schedule schedule_daily_reminder jobs');
+  console.log('************************************************************');
 
   // retrieves a list of channels that are valid for scheduling reminder for today
   // excludes the day that the channel is created
@@ -99,7 +102,8 @@ agenda.define('schedule_daily_reminders', async (job, done) => {
         // TODO: send message saying no more puzzles
       }
     }
-  });
+  })
+  done();
 });
 
 agenda.define('schedule_weekly_summary', async (job, done) => {
@@ -123,7 +127,7 @@ agenda.define('schedule_weekly_summary', async (job, done) => {
     scheduledJobsChannelIds[j.channelId] = true;
   });
 
-  channelsWithActiveSchedule.forEach(async (c) => {
+  channelsWithActiveSchedule.forEach((c) => {
     if (!scheduledJobsChannelIds[c.id]) {
       const notificationTime = _.get(c, 'schedule.friday.end', '5:00 pm');
 
@@ -134,6 +138,7 @@ agenda.define('schedule_weekly_summary', async (job, done) => {
       );
     }
   });
+  done();
 });
 
 agenda.define('channel_notification', async (job, done) => {
@@ -194,10 +199,6 @@ const isChannelScheduledForToday = (channel) => {
 (async function () {
   // TODO: change to 5 minutes
   await agenda.start();
-  // clear prior jobs
-  await agenda.cancel({ name: 'schedule_daily_reminders' });
-  await agenda.cancel({ name: 'schedule_weekly_summary' });
-
   await agenda.every(scheduleConfigs.scheduleDailyRemindersJob, 'schedule_daily_reminders');
   await agenda.every(scheduleConfigs.scheduleWeeklySummaryJob, 'schedule_weekly_summary');
 }());
