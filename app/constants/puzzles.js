@@ -72,10 +72,6 @@ module.exports = [
     correctAnswer: 'D',
     messages: [
       {
-        type: IMAGE,
-        value: 'https://gph.is/1Va8Ki7',
-      },
-      {
         type: TEXT,
         value: [
           'Mapping is a functional programming concept that applies a function to each item of a list, returning a list with newly computed values.',
@@ -89,7 +85,7 @@ module.exports = [
         value: 'Which one of the following is the mapped array?',
         choices: [
           {
-            label: '[52, 31, 29, 92, 102]',
+            label: '[5148, 1849, 1239, 21468, 30298]',
             value: 'A',
           },
           {
@@ -107,8 +103,13 @@ module.exports = [
         ],
       },
     ],
-    solution:
-      'Take a look at this repl https://repl.it/@honebot/SlushyViolentElements for a demonstration of how mapping works in python',
+    solution: [
+      "Let's evaluate the values of mapping function:",
+      '52  ->  2*52*52 - 5*52 = 5148',
+      "Only two options have 5148 as the value for the first element. Let's check the second element",
+      '31   -> 2*31*31 - 5*31 = 1767',
+      'Only [5148, 1767, 1537, 16468, 20298] matches at this point. Which is the correct answer',
+    ].join('\n'),
   },
   {
     id: 'CwoBBQILCgM',
@@ -123,7 +124,7 @@ module.exports = [
       {
         type: MC_QUESTION,
         value: [
-          "Given a sort function sort(list) that sorts an integer list in alphabetical order, how many possible different inputs would there be for the output `['a', 'b', 'c', 'd']`?",
+          "Given a sort function `sort(list)` that sorts list of elements in alphabetical order, how many possible different inputs would there be for the output `['a', 'b', 'c', 'd']`?",
           "For ex. `['d', 'c', 'b', 'a']` is one possibility, and `['z', 'y', 'g', 'a']` is not for obvious reasons.",
         ].join('\n'),
         choices: [
@@ -147,7 +148,7 @@ module.exports = [
       },
     ],
     solution:
-      'The number of different permutations for the input can be computed by factorial: 4! = 24. Here is an example https://en.wikipedia.org/wiki/Factorial_number_system#Examples that you can check out.',
+      'The number of different permutations for the input can be computed by factorial: `4! = 24`. Here is an example https://en.wikipedia.org/wiki/Factorial_number_system#Examples that you can check out.',
   },
   {
     id: 'BwENDAQGAQQ',
@@ -168,15 +169,15 @@ module.exports = [
           '    for j in range(i+1, len(items)):',
           '      if items[i] > items[j]:',
           '        switch(items, i, j)',
-          '          return items```',
+          '  return items```',
 
-          "where *items* is a list of 4 integers, and *switch* switches the values for an array given 2 positions (I know it's obvious but I wanted to tell you what it does anyways).",
+          "where *items* is a list of 4 unique integers, and *switch* switches the values for an array given 2 positions (I know it's obvious but I wanted to tell you what it does anyways).",
         ].join('\n'),
       },
       {
         type: MC_QUESTION,
         value: [
-          'What is a max number of comparisons that will be made? (i.e. how many times the statement if items[i] > arr[j] will be called)',
+          'What is a max number of comparisons that will be made?',
         ].join('\n'),
         choices: [
           {
@@ -198,14 +199,23 @@ module.exports = [
         ],
       },
     ],
-    solution:
-      'use this repl to verify the results: https://repl.it/repls/HardtofindLittleBooleanalgebra',
+    solution: [
+      'Given any four elements, comparisons will need to be made with the following i,j combination:',
+      '1) i=0, j=1 -> +1 comparison',
+      '2) i=0, j=2 -> +1 comparison',
+      '3) i=0, j=3 -> +1 comparison',
+      '4) i=1, j=2 -> +1 comparison',
+      '5) i=1, j=3 -> +1 comparison',
+      '6) i=2, j=3 -> +1 comparison',
+      '',
+      'Add them all up and we get 6 comparisons!',
+    ].join('\n'),
   },
   {
     id: 'Cg8KBwMBDg4',
     difficulty: 'EASY',
     type: PuzzleTypes.GENERAL,
-    correctAnswer: 'B',
+    correctAnswer: 'D',
     messages: [
       {
         type: IMAGE,
@@ -220,7 +230,7 @@ module.exports = [
           '    for j in range(i+1, len(items)):',
           '      if items[i] > items[j]:',
           '        switch(items, i, j)',
-          '          return items```',
+          '  return items```',
 
           "where *items* is a list of 4 integers, and *switch* switches the values for an array given 2 positions (I know it's obvious but I wanted to tell you what it does anyways).",
         ].join('\n'),
@@ -244,14 +254,23 @@ module.exports = [
             value: 'C',
           },
           {
-            label: '10',
+            label: '6',
             value: 'D',
           },
         ],
       },
     ],
-    solution:
-      'use this repl to verify the results: https://repl.it/repls/HardtofindLittleBooleanalgebra',
+    solution: [
+      "Let's use [4,3,2,1] since most switches will be needed:",
+      '1) i=0, j=1 -> 4>3 -> +1 switch. `items=[3, 4, 2, 1]`',
+      '2) i=0, j=2 -> 3>2 -> +1 switch. `items=[2, 4, 3, 1]`',
+      '3) i=0, j=3 -> 2>1 -> +1 switch. `items=[1, 4, 3, 2]`',
+      '4) i=1, j=2 -> 4>3 -> +1 switch. `items=[1, 3, 4, 2]`',
+      '5) i=1, j=3 -> 3>2 -> +1 switch. `items=[1, 2, 4, 3]`',
+      '6) i=2, j=3 -> 4>3 -> +1 switch. `items=[1, 2, 3, 4]`',
+      '',
+      'Add them all up and we get 6 switches!',
+    ].join('\n'),
   },
   {
     id: 'CwIBAQ8IBQ0',
@@ -282,7 +301,7 @@ module.exports = [
       {
         type: MC_QUESTION,
         value: [
-          'How many times does the function `F` gets called if *n = 4*?',
+          'How many times does the function `F` get called if `n = 4`?',
         ].join('\n'),
         choices: [
           {
@@ -332,7 +351,7 @@ module.exports = [
       {
         type: TEXT,
         value: [
-          'Starting off with an empty stack, the following operations are applied',
+          'Starting off with an empty stack, the following operations are applied:',
           '```push(5)',
           'push(10)',
           'pop()',
@@ -536,7 +555,16 @@ module.exports = [
         ],
       },
     ],
-    solution: 'Here is a repl with the python implementation for you to verify the result: https://repl.it/@honebot/WebbedIllRuntimeenvironment',
+    solution: [
+      'We shall evaluate a few iterations',
+      'k = 0 -> 0%3 != 1 -> do nothing',
+      'k = 1 -> 1%3 == 1 -> print 1',
+      'k = 2 -> 2%3 != 1 -> do nothing',
+      'k = 3 -> 3%3 != 1 -> do nothing',
+      'k = 4 -> 4%3 == 1 -> print 4',
+      '',
+      "well at this point, it's pretty evident that the answer is [1 4 7 10 13 16 19] since nothing else matches",
+    ],
   },
   {
     id: 'DQAPBgMIAQ4',
