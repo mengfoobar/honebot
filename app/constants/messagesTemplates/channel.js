@@ -45,10 +45,10 @@ module.exports = {
       '',
       'Some other useful information:',
       '- leaderboard is reset every week so there is always room for a new office champ :+1:',
-      `- problems will be available from *${
+      `- as of now, exercises will be available from *${
         channel.schedule[daysScheduled[0].toLowerCase()].start} - ${
         channel.schedule[daysScheduled[0].toLowerCase()]
-          .end}* on ${daysScheduled.join(', ')}; timezone is set to ${timezone.label}`,
+          .end}* on ${daysScheduled.join(', ')}; timezone is set to *${timezone.label}*`,
       '',
     ].join('\n');
   },

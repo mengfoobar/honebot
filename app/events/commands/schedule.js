@@ -9,6 +9,6 @@ module.exports = {
     const channelId = event.channel;
 
     const channel = await ChannelStore.get(channelId);
-    bot.replyPublic(event, MessageTemplates.channel.CURRENT_CHANNEL_SCHEDULE(channel);
+    bot.replyPublic(event, MessageTemplates.channel.CURRENT_CHANNEL_SCHEDULE(channel));
   },
 };

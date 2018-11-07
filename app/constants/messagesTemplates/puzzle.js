@@ -31,7 +31,7 @@ module.exports = {
         callback_id: generateDynamicId('see_solution'),
         actions: [
           {
-            name: generateDynamicId('see_solution'),
+            name: 'yes',
             text: 'Show Solution',
             value: 'yes',
             type: 'button',
@@ -43,6 +43,7 @@ module.exports = {
     {
       pattern: 'yes',
       callback(reply, convo) {
+        console.log("*********************** YO **********************")
         cb && cb(convo);
       },
     },

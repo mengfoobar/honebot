@@ -47,7 +47,7 @@ module.exports = [
             value: 'C',
           },
           {
-            label: 'i && ii',
+            label: 'i & ii',
             value: 'D',
           },
           {
@@ -62,7 +62,7 @@ module.exports = [
       '*y may be equal to x+1* -> true if x = 1',
       "*y may be odd* -> can't true since it will always be 2*(an integer) ",
       '*y may be equal to x* -> true if x = 0',
-      'Based on the above findings, the correct answer is both ii',
+      'Based on the above findings, the correct answer is just *ii*',
     ].join('\n'),
   },
   {
@@ -564,7 +564,7 @@ module.exports = [
       'k = 4 -> 4%3 == 1 -> print 4',
       '',
       "well at this point, it's pretty evident that the answer is [1 4 7 10 13 16 19] since nothing else matches",
-    ],
+    ].join('\n'),
   },
   {
     id: 'DQAPBgMIAQ4',

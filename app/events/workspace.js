@@ -1,4 +1,4 @@
-const MessageTemplates = require('../constants/messagesTemplates/workspace')
+const MessageTemplates = require('../constants/messagesTemplates/workspace');
 
 module.exports = (controller) => {
   controller.on('onboard', async (bot) => {

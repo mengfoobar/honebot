@@ -79,12 +79,16 @@ module.exports = {
             });
           }
 
-          convo.addQuestion(
-            ...Messages.SEE_SOLUTION(async (convo) => {
-              convo.addMessage(puzzle.solution);
-              convo.show();
-            }),
-          );
+          // TODO: see if we need bot to start a new conversation
+          bot.startConversation(reply, (err, convo) => {
+            convo.addQuestion(
+              ...Messages.SEE_SOLUTION((convo) => {
+                convo.addMessage(puzzle.solution);
+                convo.next();
+              }),
+            );
+            convo.next();
+          });
         },
       })),
     );
