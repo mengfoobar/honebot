@@ -24,6 +24,29 @@ module.exports = {
       },
     },
   ]],
+  SEE_SOLUTION: cb => [{
+    attachments: [
+      {
+        title: 'To see the solution, click on the button below',
+        callback_id: generateDynamicId('see_solution'),
+        actions: [
+          {
+            name: generateDynamicId('see_solution'),
+            text: 'Show Solution',
+            value: 'yes',
+            type: 'button',
+          },
+        ],
+      },
+    ],
+  }, [
+    {
+      pattern: 'yes',
+      callback(reply, convo) {
+        cb && cb(convo);
+      },
+    },
+  ]],
   CORRECT_ANSWER: () => 'Awesome! You got the right answer!',
   WRONG_ANSWER: () => 'Oh nos...answer is not right',
   SUBMISSION_RESULT_CORRECT_ANSWER: () => 'You completed the exercise in %s. Final score: %f',

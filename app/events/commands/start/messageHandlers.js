@@ -78,6 +78,13 @@ module.exports = {
               channel: user,
             });
           }
+
+          convo.addQuestion(
+            ...Messages.SEE_SOLUTION(async (convo) => {
+              convo.addMessage(puzzle.solution);
+              convo.show();
+            }),
+          );
         },
       })),
     );
