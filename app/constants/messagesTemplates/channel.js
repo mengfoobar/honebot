@@ -99,7 +99,7 @@ module.exports = {
       ? 'monday'
       : startDate.format('dddd').toLowerCase();
 
-    return `Your first puzzle will be available starting *${startDate.format(
+    return `Your first exercise will be available starting *${startDate.format(
       'dddd',
     )}* at *${channel.schedule[startDay].start}*`;
   },
@@ -107,7 +107,7 @@ module.exports = {
   SETTINGS_UPDATED: () => 'Your settings for this channel has been updated!',
   CHANNEL_REACTIVATED: (channel) => {
     const startDay = getNextStartDay(channel);
-    return `Hone bot has been reactivated. Your next puzzle will start on *${_.startCase(
+    return `Hone bot has been reactivated. Your next exercise will start on *${_.startCase(
       startDay,
     )}* at *${channel.schedule[startDay].start}*`;
   },
@@ -127,7 +127,7 @@ module.exports = {
       const startDay = getNextStartDay();
       return [
         'Submission window not yet open. ',
-        `Your next puzzle will start on *${_.startCase(startDay)}* at *${channel
+        `Your next exercise will start on *${_.startCase(startDay)}* at *${channel
           .schedule[startDay].start}*`,
       ].join('\n');
     }
@@ -146,7 +146,7 @@ module.exports = {
     const startDay = getNextStartDay(channel);
     return [
       'Submission window not yet open. ',
-      `Your next puzzle will start on *${_.startCase(startDay)}* at *${channel
+      `Your next exercise will start on *${_.startCase(startDay)}* at *${channel
         .schedule[startDay].start}*`,
     ].join('\n');
   },
@@ -157,7 +157,7 @@ module.exports = {
       .format('dddd')
       .toLowerCase();
 
-    message.push("Here is what we have for today's puzzle so far:");
+    message.push("Here is what we have for today's exercise so far:");
     message.push('');
     submissions.forEach((s, index) => {
       message.push(
@@ -180,5 +180,5 @@ module.exports = {
       .toLowerCase();
     return `Submissions are open till *${channel.schedule[todayDay].start}*`;
   },
-  SUBMISSION_READY: () => 'You can now start on the puzzle in the chat with me: *Hone Bot*!',
+  SUBMISSION_READY: () => 'You can now start on the exercise in the chat with me: *Hone Bot*!',
 };
