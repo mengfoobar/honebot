@@ -22,14 +22,6 @@ module.exports = (controller) => {
     setTimeout(() => {
       bot.say({
         channel: channel.id,
-        text: MessageTemplates.channel.CURRENT_CHANNEL_SCHEDULE(channel),
-      });
-    },
-    2000);
-
-    setTimeout(() => {
-      bot.say({
-        channel: channel.id,
         text: MessageTemplates.channel.INTRO_PUZZLE(),
       });
     },

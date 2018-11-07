@@ -6,6 +6,7 @@ const settingsCommandHandler = require('./settings');
 const leaderboardCommandHandler = require('./leaderboard');
 const helpCommandHandler = require('./help');
 const statusCommandHandler = require('./status');
+const scheduleCommandHandler = require('./schedule');
 
 const commandHandlers = {
   start: startCommandHandler,
@@ -13,12 +14,11 @@ const commandHandlers = {
   leaderboard: leaderboardCommandHandler,
   help: helpCommandHandler,
   status: statusCommandHandler,
+  schedule: scheduleCommandHandler,
 };
 
 module.exports = (controller) => {
-
   controller.on('slash_command', (bot, e) => {
-
     const { command, value, configs } = parseMentionText(e.text);
     const handler = get(commandHandlers, `${command}.${value ? `${value}` : 'default'}`);
 

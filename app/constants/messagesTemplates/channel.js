@@ -8,7 +8,8 @@ const getNextStartDay = (channel) => {
   for (let i = 1; i < 8; i += 1) {
     const nextDay = moment()
       .utcOffset(channel.timezone)
-      .add(i, 'days').format('dddd')
+      .add(i, 'days')
+      .format('dddd')
       .toLowerCase();
     if (schedule[nextDay]) {
       return nextDay;
@@ -17,37 +18,55 @@ const getNextStartDay = (channel) => {
   return moment().utcOffset(channel.timezone).format('dddd').toLowerCase();
 };
 
-
 module.exports = {
-  JOINED_CHANNEL: () => [
-    'Hi!',
-    'I schedule fun bite-size computer science problems for your team!',
-    '',
-    'My goal is to nudge your team to get a refresher on existing CS fundamentals, '
-    + 'maybe learn a few new ones, and have some fun competing with '
-    + 'each other :muscle:',
-    '',
-    '',
-    'Here are a few things you need know about me :wink:',
-    '',
-    '- please configure your *workspace timezone*, desired *schedule* using `/hone settings` :exclamation:',
-    '- once submission window is open, type `/hone start` to start on the problem for the day',
-    '- type `/hone help` to see list of commands',
-    '- to stop *hone* bot from sending puzzles, set status to *Offline* in settings',
-    '',
-    '',
-    'Some other useful information:',
-    '- leaderboard is reset every week so there is always room for a new office champ :+1:',
-    '- updates to settings can take up to a day to be in effect',
-    '',
-    '',
-  ].join('\n'),
+  JOINED_CHANNEL: (channel) => {
+    const daysScheduled = [
+      'monday',
+      'tuesday',
+      'wednesday',
+      ' thursday',
+      'friday',
+    ]
+      .filter(d => channel.schedule[d])
+      .map(d => _.startCase(d));
+    const timezone = timezones.find(t => t.value === channel.timezone);
+
+    return [
+      'Hi!',
+      'I schedule bite-size programming problems for your team!',
+      '',
+      '',
+      'Here are a few things you need know about me:',
+      '',
+      '- :exclamation: please configure your *workspace timezone*, desired *schedule* using `/hone settings` ',
+      '- once submission window is open, type `/hone start` to start on the problem for the day',
+      '- type `/hone help` to see list of commands',
+      '',
+      '',
+      'Some other useful information:',
+      '- leaderboard is reset every week so there is always room for a new office champ :+1:',
+      `- problems will be available from *${
+        channel.schedule[daysScheduled[0].toLowerCase()].start} - ${
+        channel.schedule[daysScheduled[0].toLowerCase()]
+          .end}* on ${daysScheduled.join(', ')}; timezone is set to ${timezone.label}`,
+      '',
+    ].join('\n');
+  },
   CURRENT_CHANNEL_SCHEDULE: (channel) => {
-    const daysScheduled = ['monday', 'tuesday', 'wednesday', ' thursday', 'friday'].filter(d => channel.schedule[d]).map(d => _.startCase(d));
+    const daysScheduled = [
+      'monday',
+      'tuesday',
+      'wednesday',
+      ' thursday',
+      'friday',
+    ].filter(d => channel.schedule[d])
+      .map(d => _.startCase(d));
     const timezone = timezones.find(t => t.value === channel.timezone);
     return [
       `Problems scheduled for *${daysScheduled.join(', ')}.*`,
-      `Submission window opens from *${channel.schedule[daysScheduled[0].toLowerCase()].start} - ${channel.schedule[daysScheduled[0].toLowerCase()].end}*.`,
+      `Submission window opens from *${channel.schedule[
+        daysScheduled[0].toLowerCase()
+      ].start} - ${channel.schedule[daysScheduled[0].toLowerCase()].end}*.`,
       `Current timezone is set to ${timezone.label}`,
     ].join('\n');
   },
@@ -57,15 +76,16 @@ module.exports = {
     if (submissions && submissions.length > 0) {
       leaderboardMessage.push('Here are the results so far for this week!');
       leaderboardMessage.push('');
-      submissions
-        .forEach(
-          (r, index) => {
-            const data = r.toJSON();
-            leaderboardMessage.push(`${index + 1}. *${r.user.userName}*: Score *${
-              parseFloat(data.totalScore).toFixed(2)
-            }*, Avg. Time Taken *${parseFloat(data.avgDuration).toFixed(2)}s*`);
-          },
+      submissions.forEach((r, index) => {
+        const data = r.toJSON();
+        leaderboardMessage.push(
+          `${index + 1}. *${r.user.userName}*: Score *${parseFloat(
+            data.totalScore,
+          ).toFixed(2)}*, Avg. Time Taken *${parseFloat(
+            data.avgDuration,
+          ).toFixed(2)}s*`,
         );
+      });
       // TODO: mention top 3 scorers if > 3, else mention top 1
     } else {
       leaderboardMessage.push('No submissions yet!');
@@ -76,68 +96,88 @@ module.exports = {
     const startDate = moment().utcOffset(channel.timezone).add(1, 'days');
 
     const startDay = ['Saturday', 'Sunday'].includes(startDate.format('dddd'))
-      ? 'monday' : startDate.format('dddd').toLowerCase();
+      ? 'monday'
+      : startDate.format('dddd').toLowerCase();
 
-    return `Your first puzzle will be available starting *${startDate.format('dddd')}* at *${
-      channel.schedule[startDay].start}*`;
+    return `Your first puzzle will be available starting *${startDate.format(
+      'dddd',
+    )}* at *${channel.schedule[startDay].start}*`;
   },
   INTRO_PUZZLE: () => "Let's try a practice problem to break the ice!\nType `/hone start` to get started.",
   SETTINGS_UPDATED: () => 'Your settings for this channel has been updated!',
   CHANNEL_REACTIVATED: (channel) => {
     const startDay = getNextStartDay(channel);
-    return `Hone bot has been reactivated. Your next puzzle will start on *${_.startCase(startDay)}* at *${channel.schedule[startDay].start}*`;
+    return `Hone bot has been reactivated. Your next puzzle will start on *${_.startCase(
+      startDay,
+    )}* at *${channel.schedule[startDay].start}*`;
   },
   CHANNEL_DEACTIVATED: () => 'Hone bot has been deactivated. You will no longer receive programming puzzles.',
   CURRENT_STATUS: (channel, status) => {
     if (!channel.isActive) {
       return 'Hone bot is not active! Please set bot status to *Online* in settings.';
     }
-    const todayDay = moment().utcOffset(channel.timezone).format('dddd').toLowerCase();
+    const todayDay = moment()
+      .utcOffset(channel.timezone)
+      .format('dddd')
+      .toLowerCase();
 
     if (!status.isSubmissionWindowOpen) {
       if (channel.schedule[todayDay]) {
-
       }
       const startDay = getNextStartDay();
-      return ['Submission window not yet open. ',
-        `Your next puzzle will start on *${
-          _.startCase(startDay)}* at *${channel.schedule[startDay].start}*`,
+      return [
+        'Submission window not yet open. ',
+        `Your next puzzle will start on *${_.startCase(startDay)}* at *${channel
+          .schedule[startDay].start}*`,
       ].join('\n');
     }
 
     return '';
   },
   UPCOMING_SCHEDULED_SUBMISSION_FOR_TODAY: (channel) => {
-    const todayDay = moment().utcOffset(channel.timezone).format('dddd').toLowerCase();
+    const todayDay = moment()
+      .utcOffset(channel.timezone)
+      .format('dddd')
+      .toLowerCase();
     return `Submission will open at *${channel.schedule[todayDay].start}*`;
   },
   CHANNEL_INACTIVE: () => 'Hone bot is not active! Please set bot status to *Online* in settings.',
   NEXT_SUBMISSION_SCHEDULED_FOR_FUTURE_DATE: (channel) => {
     const startDay = getNextStartDay(channel);
-    return ['Submission window not yet open. ',
-      `Your next puzzle will start on *${
-        _.startCase(startDay)}* at *${channel.schedule[startDay].start}*`,
+    return [
+      'Submission window not yet open. ',
+      `Your next puzzle will start on *${_.startCase(startDay)}* at *${channel
+        .schedule[startDay].start}*`,
     ].join('\n');
   },
   SUBMISSION_WINDOW_OPEN_WITH_SUBMISSIONS: (channel, submissions) => {
     const message = [];
-    const todayDay = moment().utcOffset(channel.timezone).format('dddd').toLowerCase();
+    const todayDay = moment()
+      .utcOffset(channel.timezone)
+      .format('dddd')
+      .toLowerCase();
 
     message.push("Here is what we have for today's puzzle so far:");
     message.push('');
-    submissions
-      .forEach(
-        (s, index) => {
-          message.push(`${index + 1}. *${s.user.userName}*: Score *${s.score}*, Time Taken *${
-            moment.utc(s.duration * 1000).format('mm:ss')}*`);
-        },
+    submissions.forEach((s, index) => {
+      message.push(
+        `${index + 1}. *${s.user
+          .userName}*: Score *${s.score}*, Time Taken *${moment
+          .utc(s.duration * 1000)
+          .format('mm:ss')}*`,
       );
+    });
     message.push('');
-    message.push(`Submissions are open till *${channel.schedule[todayDay].end}*`);
+    message.push(
+      `Submissions are open till *${channel.schedule[todayDay].end}*`,
+    );
     return message.join('\n');
   },
   SUBMISSION_WINDOW_OPEN_NO_SUBMISSIONS: (channel) => {
-    const todayDay = moment().utcOffset(channel.timezone).format('dddd').toLowerCase();
+    const todayDay = moment()
+      .utcOffset(channel.timezone)
+      .format('dddd')
+      .toLowerCase();
     return `Submissions are open till *${channel.schedule[todayDay].start}*`;
   },
   SUBMISSION_READY: () => 'You can now start on the puzzle in the chat with me: *Hone Bot*!',
