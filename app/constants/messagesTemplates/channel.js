@@ -67,7 +67,7 @@ module.exports = {
       `Submission window opens from *${channel.schedule[
         daysScheduled[0].toLowerCase()
       ].start} - ${channel.schedule[daysScheduled[0].toLowerCase()].end}*.`,
-      `Current timezone is set to ${timezone.label}`,
+      `Current timezone is set to *${timezone.label}*`,
     ].join('\n');
   },
   LEADERBOARD_RESULTS: (submissions) => {

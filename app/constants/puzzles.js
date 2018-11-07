@@ -60,7 +60,7 @@ module.exports = [
     solution: [
       "Let's go through each option:",
       '*y may be equal to x+1* -> true if x = 1',
-      "*y may be odd* -> can't true since it will always be 2*(an integer) ",
+      "*y may be odd* -> can't be true since it will always be 2*(an integer) ",
       '*y may be equal to x* -> true if x = 0',
       'Based on the above findings, the correct answer is just *ii*',
     ].join('\n'),
