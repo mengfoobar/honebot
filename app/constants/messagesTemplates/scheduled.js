@@ -22,10 +22,10 @@ module.exports = {
       )
       .join('\n');
 
-    if (submissions) {
+    if (submissions && submissions.length > 0) {
       message += `Here are the results for today: \n\n${submissionsStr}`;
     } else {
-      message += '\n\nNo submissions today boohoo :( ';
+      message += "\nThere weren't any submission today ¯\\_(ツ)_/¯";
     }
     return message;
   },
