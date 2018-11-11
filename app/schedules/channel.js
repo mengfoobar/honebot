@@ -29,7 +29,6 @@ const ScheduledMessagesTemplates = require('../constants/messagesTemplates/sched
 
 const agenda = new Agenda({
   db: { address: mongoConnectionString },
-  processEvery: '30 seconds',
 });
 
 agenda.define('schedule_daily_reminders', async (job, done) => {
@@ -41,9 +40,12 @@ agenda.define('schedule_daily_reminders', async (job, done) => {
   // retrieves a list of channels that are valid for scheduling reminder for today
   // excludes the day that the channel is created
   const channels = await ChannelStore.all();
-  const channelsWithActiveSchedule = channels.filter(c => (
-    isChannelScheduledForToday(c)
-    && moment(c.createdAt).diff(moment(), 'days') !== 0));
+  const channelsWithActiveSchedule = channels.filter((c) => {
+    const dateCreatedAsStr = moment(c.createdAt).utcOffset(c.timezone).format('YYYY-MM-DD');
+
+    const todayDateCreatedAsStr = moment().utcOffset(c.timezone).format('YYYY-MM-DD');
+    return isChannelScheduledForToday(c) && todayDateCreatedAsStr !== dateCreatedAsStr;
+  });
 
   const channelIdsWithActiveSchedule = {};
   channelsWithActiveSchedule.forEach((a) => {
@@ -102,7 +104,7 @@ agenda.define('schedule_daily_reminders', async (job, done) => {
         // TODO: send message saying no more puzzles
       }
     }
-  })
+  });
   done();
 });
 
@@ -199,6 +201,10 @@ const isChannelScheduledForToday = (channel) => {
 (async function () {
   // TODO: change to 5 minutes
   await agenda.start();
+  // clear prior jobs
+  await agenda.cancel({ name: 'schedule_daily_reminders' });
+  await agenda.cancel({ name: 'schedule_weekly_summary' });
+
   await agenda.every(scheduleConfigs.scheduleDailyRemindersJob, 'schedule_daily_reminders');
   await agenda.every(scheduleConfigs.scheduleWeeklySummaryJob, 'schedule_weekly_summary');
 }());
