@@ -157,17 +157,20 @@ module.exports = {
       .format('dddd')
       .toLowerCase();
 
-    message.push("Here is what we have for today's exercise so far:");
-    message.push('');
-    submissions.forEach((s, index) => {
-      message.push(
-        `${index + 1}. *${s.user
-          .userName}*: Score *${s.score}*, Time Taken *${moment
-          .utc(s.duration * 1000)
-          .format('mm:ss')}*`,
-      );
-    });
-    message.push('');
+    if (submissions && submissions.length > 0) {
+      message.push("Here is what we have for today's exercise so far:");
+      message.push('');
+      submissions.forEach((s, index) => {
+        message.push(
+          `${index + 1}. *${s.user
+            .userName}*: Score *${s.score}*, Time Taken *${moment
+            .utc(s.duration * 1000)
+            .format('mm:ss')}*`,
+        );
+      });
+      message.push('');
+    }
+
     message.push(
       `Submissions are open till *${channel.schedule[todayDay].end}*`,
     );
