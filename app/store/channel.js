@@ -20,6 +20,11 @@ module.exports = {
     callback && callback(null, channel.toJSON());
     return channel;
   },
+  getChannelsForWorkspace: workspaceId => ChannelModel.findAll({
+    where: {
+      workspace: workspaceId,
+    },
+  }),
   update: async (id, params) => {
     const channel = await ChannelModel.findById(id);
     return channel.update(params);
