@@ -46,6 +46,7 @@ agenda.define('schedule_daily_reminders', async (job, done) => {
     const todayDateCreatedAsStr = moment().utcOffset(c.timezone).format('YYYY-MM-DD');
     return isChannelScheduledForToday(c) && todayDateCreatedAsStr !== dateCreatedAsStr;
   });
+  console.log(channelsWithActiveSchedule)
 
   const channelIdsWithActiveSchedule = {};
   channelsWithActiveSchedule.forEach((a) => {
