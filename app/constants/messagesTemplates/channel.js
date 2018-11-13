@@ -63,8 +63,8 @@ module.exports = {
       .map(d => _.startCase(d));
     const timezone = timezones.find(t => t.value === channel.timezone);
     return [
-      `Problems scheduled for *${daysScheduled.join(', ')}.*`,
-      `Submission window opens from *${channel.schedule[
+      `Exercises are scheduled for *${daysScheduled.join(', ')}.*`,
+      `Submission window is open from *${channel.schedule[
         daysScheduled[0].toLowerCase()
       ].start} - ${channel.schedule[daysScheduled[0].toLowerCase()].end}*.`,
       `Current timezone is set to *${timezone.label}*`,
@@ -188,4 +188,5 @@ module.exports = {
     'Hone bot has already joined another channel! ',
     "Please contact hello@honebot.io if you'd like to make a change",
   ].join('\n'),
+  EXERCISES_SCHEDULED_FOR: () => 'Exercises are scheduled for every week on *Mondays, Wednesdays, Fridays*',
 };

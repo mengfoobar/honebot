@@ -10,7 +10,7 @@ module.exports = async (bot, event) => {
 
   const adjustedMoment = moment().utcOffset(channel.timezone);
   const todayDay = adjustedMoment.format('dddd').toLowerCase();
-  const todaySchedule = channel.schedule['monday']; //TODO monday for now, fix later
+  const todaySchedule = channel.schedule.monday; // TODO monday for now, fix later
 
 
   const dialog = bot

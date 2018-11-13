@@ -18,7 +18,7 @@ module.exports = {
     const channel = await ChannelModel.findById(channelId);
     const adjustedMoment = moment().utcOffset(channel.timezone);
     const todayDay = adjustedMoment.format('dddd').toLowerCase();
-    const todaySchedule = channel.schedule['monday']; //TODO: monday for now, change based on day once supported
+    const todaySchedule = channel.schedule.monday; // TODO: monday for now, change based on day once supported
     const startTime = moment(todaySchedule.start, 'hh:mm A').utcOffset(channel.timezone, true);
     const endTime = moment(todaySchedule.end, 'hh:mm A').utcOffset(channel.timezone, true);
 
@@ -50,7 +50,8 @@ module.exports = {
     } else {
       message = '';
     }
+    message += `\n${MessageTemplates.channel.EXERCISES_SCHEDULED_FOR()}`;
 
-    bot.replyPublic(event, message);
+    bot.replyPrivate(event, message);
   },
 };

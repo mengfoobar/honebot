@@ -25,7 +25,7 @@ module.exports = (controller) => {
     if (handler) {
       handler && handler(bot, e, configs);
     } else {
-      bot.replyPublic(e, misc.UNKNOWN_COMMAND());
+      bot.replyPrivate(e, misc.UNKNOWN_COMMAND());
     }
   });
 };
