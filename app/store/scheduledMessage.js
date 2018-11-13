@@ -13,15 +13,17 @@ module.exports = {
       messageType,
     },
   }),
-  get: async (id, callback) => {
-
-  },
-  save: async (rawData, callback) => {
-
-  },
-  delete: async (id, callback) => {
-  },
-  all: async (callback) => {
-
-  },
+  getScheduledMessageForChannelForDate: async (
+    channel, dateStr, messageType,
+  ) => ScheduledMessage.findAll({
+    where: {
+      channelId: channel,
+      dateScheduled: dateStr,
+      messageType,
+    },
+  }),
+  get: async (id, callback) => {},
+  save: async (rawData, callback) => {},
+  delete: async (id, callback) => {},
+  all: async (callback) => {},
 };
