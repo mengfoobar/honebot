@@ -12,7 +12,7 @@ const PuzzleType = require('../../../constants/puzzleType');
 
 module.exports = {
   default: async (bot, event, configs = null) => {
-    const { channel, user, team } = event;
+    const { channel, team } = event;
     const channelInstance = await ChannelStore.get(channel);
     const assignedPuzzle = await ChannelStore.getAssignedPuzzleForToday(channel);
 
@@ -27,17 +27,18 @@ module.exports = {
       return;
     }
 
-    bot.replyPrivate(event, MessageTemplates.channel.SUBMISSION_READY);
+    bot.replyPrivate(event, MessageTemplates.channel.SUBMISSION_READY());
 
     bot.startPrivateConversation(event, async (err, convo) => {
       convo.addQuestion(
         ...MessageTemplates.puzzle.START_PUZZLE(async (convo) => {
-          const userInstance = await UserStore.get(user);
+          const userId = _.get(convo, 'context.user');
+          const userInstance = await UserStore.get(userId);
           if (!userInstance) {
-            const user3rdPartyInfo = await UserStore.getUserInfoFrom3rdParty(bot, user);
+            const user3rdPartyInfo = await UserStore.getUserInfoFrom3rdParty(bot, userId);
             const [newUser, isNew] = await UserStore.save({
               workspace: team,
-              id: user,
+              id: userId,
               channel,
               userName: user3rdPartyInfo.name,
             });
@@ -50,11 +51,12 @@ module.exports = {
           }
 
           const hasUserSubmittedForPuzzle = await SubmissionStore.hasUserSubmittedForPuzzle(
-            user, assignedPuzzle.id,
+            userId, assignedPuzzle.id,
           );
 
           if (hasUserSubmittedForPuzzle) {
-            bot.replyPublic({ text: MessageTemplates.puzzle.ALREADY_SUBMITTED(), channel: user });
+            convo.addMessage({ text: MessageTemplates.puzzle.ALREADY_SUBMITTED() });
+            convo.next();
           } else {
             assignedPuzzle.messages.map((m) => {
               MessageHandler[m.type]({

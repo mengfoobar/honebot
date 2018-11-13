@@ -43,7 +43,6 @@ module.exports = {
     {
       pattern: 'yes',
       callback(reply, convo) {
-        console.log("*********************** YO **********************")
         cb && cb(convo);
       },
     },
@@ -52,7 +51,7 @@ module.exports = {
   WRONG_ANSWER: () => 'Oh nos...answer is not right',
   SUBMISSION_RESULT_CORRECT_ANSWER: () => 'You completed the exercise in %s. Final score: %f',
   SUBMISSION_RESULT_WRONG_ANSWER: () => 'Hope ya got some in ya for next time.',
-  ALREADY_SUBMITTED: () => 'You already submitted an answer for this quiz. Let\'s play fair now',
+  ALREADY_SUBMITTED: () => 'You already submitted an answer for this quiz. Nice try',
   OUT_OF_PUZZLES: () => "Your have finished up all our puzzles you go getter! We'll be back with more soon!",
   ONE_MINUTE_LEFT: () => "Only 1 minute left! Let's crunch those numbers",
   THIRTY_SECONDS_LEFT: () => '30 seconds left!',

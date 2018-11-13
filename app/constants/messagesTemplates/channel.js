@@ -183,9 +183,9 @@ module.exports = {
       .toLowerCase();
     return `Submissions are open till *${channel.schedule[todayDay].start}*`;
   },
-  SUBMISSION_READY: () => 'You can now start on the exercise in the chat with me: *Hone Bot*!',
+  SUBMISSION_READY: () => 'You can continue with the exercise in our private chat',
   CHANNEL_EXISTS_FOR_WORKSPACE: () => [
     'Hone bot has already joined another channel! ',
-    "Please contact hello@honebot.io if you'd like to make a change"
-  ].join('\n')
+    "Please contact hello@honebot.io if you'd like to make a change",
+  ].join('\n'),
 };
