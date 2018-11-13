@@ -104,7 +104,7 @@ module.exports = {
     )}* at *${channel.schedule[startDay].start}*`;
   },
   INTRO_PUZZLE: () => "Let's try a practice problem to break the ice!\nType `/hone start` to get started.",
-  SETTINGS_UPDATED: () => 'Your settings for this channel has been updated!',
+  SETTINGS_UPDATED: () => 'Settings for this channel were updated!',
   CHANNEL_REACTIVATED: (channel) => {
     const startDay = getNextStartDay(channel);
     return `Hone bot has been reactivated. Your next exercise will start on *${_.startCase(
