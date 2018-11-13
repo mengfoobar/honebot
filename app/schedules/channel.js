@@ -193,7 +193,10 @@ const isChannelScheduledForToday = (channel) => {
   if (!isActive) {
     return false;
   }
-  if (!schedule[moment().format('dddd').toLowerCase()]) {
+  console.log('****************** CHANNEL SCHEDULE FOR TODAY *************************')
+  console.log(schedule[moment().utcOffset(channel.timezone).format('dddd').toLowerCase()])
+
+  if (!schedule[moment().utcOffset(channel.timezone).format('dddd').toLowerCase()]) {
     return false;
   }
   return true;
