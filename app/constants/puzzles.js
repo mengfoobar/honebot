@@ -238,7 +238,7 @@ module.exports = [
       {
         type: MC_QUESTION,
         value: [
-          'What is the max number of *switches* that will be made?',
+          'What is the max number of `switches` that will be made?',
         ].join('\n'),
         choices: [
           {
@@ -557,13 +557,14 @@ module.exports = [
     ],
     solution: [
       'We shall evaluate a few iterations',
+      '',
       'k = 0 -> 0%3 != 1 -> do nothing',
       'k = 1 -> 1%3 == 1 -> print 1',
       'k = 2 -> 2%3 != 1 -> do nothing',
       'k = 3 -> 3%3 != 1 -> do nothing',
       'k = 4 -> 4%3 == 1 -> print 4',
       '',
-      "well at this point, it's pretty evident that the answer is [1 4 7 10 13 16 19] since nothing else matches",
+      "...at this point, it's evident that the answer is *[1 4 7 10 13 16 19]* since nothing else matches",
     ].join('\n'),
   },
   {
@@ -590,7 +591,7 @@ module.exports = [
       {
         type: MC_QUESTION,
         value: [
-          'How many times does "#" get printed for count = 4?  (try it without compiling)',
+          'How many times does "#" get printed if count = 4?  (try it without compiling)',
         ].join('\n'),
         choices: [
           {
@@ -646,13 +647,13 @@ module.exports = [
           '    if not S.has(x) then',
           '      S.set(x)',
           '      A.push(x)',
-          '  return```',
+          '  return A```',
         ].join('\n'),
       },
       {
         type: MC_QUESTION,
         value: [
-          'If S is a hash set, what is the O() complexity?',
+          'If S is a hash set, what is the Big O complexity?',
         ].join('\n'),
         choices: [
           {
