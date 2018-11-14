@@ -8,8 +8,8 @@ module.exports = {
     const adjustedMoment = moment().utcOffset(timezone);
     const dayOfWeek = adjustedMoment.format('dddd').toLowerCase();
     if (schedule[dayOfWeek]) {
-      const start = moment(schedule[dayOfWeek].start, format).utcOffset(timezone);
-      const end = moment(schedule[dayOfWeek].end, format).utcOffset(timezone);
+      const start = moment(schedule[dayOfWeek].start, format).utcOffset(timezone, true);
+      const end = moment(schedule[dayOfWeek].end, format).utcOffset(timezone, true);
       return adjustedMoment.isBetween(start, end);
     }
     return false;

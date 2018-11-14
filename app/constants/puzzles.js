@@ -652,7 +652,7 @@ module.exports = [
       {
         type: MC_QUESTION,
         value: [
-          'If *S* is a hash set, what is the *O()* complexity?',
+          'If S is a hash set, what is the O() complexity?',
         ].join('\n'),
         choices: [
           {
@@ -674,7 +674,7 @@ module.exports = [
         ],
       },
     ],
-    solution: 'Since hash set has O(1), and we are iterating through n elements -> it would be O(n)',
+    solution: 'Since hash set has access of O(1), and we are iterating through n elements -> it would be O(n)',
   },
   {
     id: 'AwgMCggDAgk',

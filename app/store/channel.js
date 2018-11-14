@@ -61,17 +61,17 @@ module.exports = {
     });
     return freshPuzzle;
   },
-  getAssignedPuzzleForToday: async (channelId) => {
+  getAssignedPuzzleForToday: async (channel) => {
     // TODO: fix where to make the date utcoffset
     const channels = await ChannelModel.findAll({
       where: {
-        id: channelId,
+        id: channel.id,
       },
       include: [{
         model: PuzzleModel,
         through: {
           attributes: ['puzzleId'],
-          where: { dateScheduled: moment().format('YYYY-MM-DD') },
+          where: { dateScheduled: moment().utcOffset(channel.timezone).format('YYYY-MM-DD') },
         },
       }],
     });
