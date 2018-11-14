@@ -52,7 +52,7 @@ agenda.define('schedule_daily_reminders', async (job, done) => {
     const existingScheduledMessages = await ScheduledMessageStore
       .getScheduledMessageForChannelForDate(c.id, dateStr, PUZZLE_SUBMISSION_OPEN.name);
 
-    if (!(existingScheduledMessages && existingScheduledMessages.length > 0)) {
+    if (existingScheduledMessages && existingScheduledMessages.length > 0) {
       return;
     }
 
