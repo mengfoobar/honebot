@@ -14,7 +14,7 @@ module.exports = {
   default: async (bot, event, configs = null) => {
     const { channel, team } = event;
     const channelInstance = await ChannelStore.get(channel);
-    const assignedPuzzle = await ChannelStore.getAssignedPuzzleForToday(channel);
+    const assignedPuzzle = await ChannelStore.getAssignedPuzzleForToday(channelInstance);
 
 
     if (
