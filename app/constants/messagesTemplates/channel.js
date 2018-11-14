@@ -172,7 +172,7 @@ module.exports = {
     }
 
     message.push(
-      `Submissions are open till *${channel.schedule[todayDay].end}*`,
+      `Submissions are open till *${channel.schedule[todayDay].end}*.`,
     );
     return message.join('\n');
   },
@@ -188,5 +188,5 @@ module.exports = {
     'Hone bot has already joined another channel! ',
     "Please contact hello@honebot.io if you'd like to make a change",
   ].join('\n'),
-  EXERCISES_SCHEDULED_FOR: () => 'Exercises are scheduled for every week on *Mondays, Wednesdays, Fridays*',
+  EXERCISES_SCHEDULED_FOR: () => 'Exercises are scheduled every week on *Mondays, Wednesdays, Fridays*.',
 };
